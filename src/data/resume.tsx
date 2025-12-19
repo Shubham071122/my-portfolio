@@ -23,6 +23,13 @@ export const DATA = {
     "C++",
     "MongoDB",
     "AWS",
+    "TailwindCSS",
+    "Redux",
+    "Git",
+    "Linux",
+    "Firebase",
+    "Express.js",
+    "GraphQL"
 
   ],
   navbar: [
