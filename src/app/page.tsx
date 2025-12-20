@@ -11,6 +11,29 @@ import Markdown from "react-markdown";
 
 const BLUR_FADE_DELAY = 0.04;
 
+export const metadata = {
+  title: DATA.name + " | Full Stactk Developer",
+  description: DATA.description,
+  openGraph: {
+    title: DATA.name + " | Full Stack Developer",
+    description: DATA.summary,
+    url: DATA.url,
+    images: [
+      {
+        url: DATA.avatarUrl.startsWith('http') ? DATA.avatarUrl : DATA.url + DATA.avatarUrl,
+        alt: DATA.name,
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: DATA.name + " | Portfolio",
+    description: DATA.summary,
+    images: [DATA.avatarUrl.startsWith('http') ? DATA.avatarUrl : DATA.url + DATA.avatarUrl],
+  },
+};
+
 export default function Page() {
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">

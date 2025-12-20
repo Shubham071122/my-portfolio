@@ -43,9 +43,20 @@ export function ProjectCard({
   return (
     <Card
       className={
-        "flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full"
+        cn(
+          "flex flex-col overflow-hidden transition-all duration-300 border ease-out h-full relative group hover:bg-gradient-to-br from-background via-muted to-background rounded-2xl",
+          "hover:scale-[1.03] hover:rotate-1 hover:shadow-2xl",
+          className
+        )
       }
+      style={{ perspective: "800px" }}
     >
+      {/* <span
+        className="pointer-events-none absolute bottom-0 right-0 h-0 w-0.5 bg-gradient-to-t from-primary to-secondary rounded-2xl transition-all duration-300 group-hover:h-full z-100"
+      />
+      <span
+        className="pointer-events-none absolute bottom-0 right-0 w-0 h-0.5 bg-gradient-to-l from-primary to-secondary rounded-2xl transition-all duration-300 group-hover:w-full z-100"
+      /> */}
       <Link
         href={href || "#"}
         className={cn("block cursor-pointer", className)}

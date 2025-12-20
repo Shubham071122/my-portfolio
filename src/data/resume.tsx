@@ -4,7 +4,7 @@ import { HomeIcon, NotebookIcon } from "lucide-react";
 export const DATA = {
   name: "Shubham",
   initials: "SK",
-  url: "https://shubham.io",
+  url: "https://techshubham.cloud",
   location: "New Delhi, India",
   locationLink: "https://www.google.com/maps/place/new+delhi",
   description:
@@ -88,7 +88,7 @@ export const DATA = {
       start: "May 2025",
       end: "Present",
       description:
-        "Architected and wrote the entire MVP of the GeForce Now Cloud Gaming internal admin and A/B testing dashboard using React, Redux, TypeScript, and Python.",
+        "Life is great at Earnest Data Analytics! I'm building scalable web applications with Next.js, Node.js, and AWS. Collaborating with a talented team to deliver top-notch solutions for our clients. Excited to be part of this innovative journey!",
     },
     {
       company: "Rupeestop",
@@ -140,7 +140,7 @@ export const DATA = {
   projects: [
     {
       title: "Can'e Chat",
-      href: "https://chatcollect.com",
+      href: "#",
       dates: "Nov 2024 - Nov 2025",
       active: true,
       description:
@@ -170,9 +170,9 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "",
+      image: "/canechat.png",
       video:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/chat-collect.mp4",
+        "",
     },
     {
       title: "Streamiify",
@@ -207,8 +207,8 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "",
-      video: "https://cdn.magicui.design/bento-grid.mp4",
+      image: "/streamify2.png",
+      video: "",
     },
     {
       title: "View Vista",
@@ -236,8 +236,8 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "",
-      video: "https://cdn.llm.report/openai-demo.mp4",
+      image: "/viewvista.png",
+      video: "",
     },
   ],
   hackathons: [
