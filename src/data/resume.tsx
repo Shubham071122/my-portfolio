@@ -139,6 +139,42 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "AI Agent",
+      href: "https://ai-agent-fe-peach.vercel.app",
+      dates: "Jan 2026 - Feb 2026",
+      active: true,
+      description:
+        "Built an intelligent document assistant that allows users to chat with a curated library of PDF books to get instant, evidence-based answers. Implemented a Retrieval-Augmented Generation (RAG) system to ensure AI responses are grounded in real data. Features include a secure Admin dashboard for managing documents, role-based authentication (RBAC), and a modern UI with fluid animations.",
+      technologies: [
+        "Next.js",
+        "TypeScript",
+        "Node.js",
+        "Python FastAPI",
+        "Google Gemini",
+        "Mongo Vector DB",
+        "RAG"
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://ai-agent-fe-peach.vercel.app",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "FE",
+          href: "https://github.com/Shubham071122/ai-agent-fe",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "BE",
+          href: "https://github.com/Shubham071122/ai-agent-be",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/ai-agent.png",
+      video: "",
+    },
+    {
       title: "Can'e Chat",
       href: "#",
       dates: "Nov 2024 - Nov 2025",
@@ -170,7 +206,7 @@ export const DATA = {
           icon: <Icons.github className="size-3" />,
         },
       ],
-      image: "/canechat.png",
+      image: "/canechat2.png",
       video:
         "",
     },
