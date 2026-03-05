@@ -46,7 +46,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between">
                 <div className="space-y-1">
                     <h2 className="text-3xl font-bold tracking-tight">Admin Dashboard</h2>
-                    <p className="text-muted-foreground">Welcome back! Here's what's happening today.</p>
+                    <p className="text-muted-foreground">Welcome back! Here&#39;s what&#39;s happening today.</p>
                 </div>
             </div>
 

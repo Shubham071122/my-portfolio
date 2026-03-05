@@ -56,7 +56,7 @@ export default async function StaticPagesPage() {
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h2 className="text-3xl font-bold tracking-tight">Static Pages</h2>
-          <p className="text-muted-foreground">Manage your site's static content and blog posts.</p>
+          <p className="text-muted-foreground">Manage your site&#39;s static content and blog posts.</p>
         </div>
       </div>
 

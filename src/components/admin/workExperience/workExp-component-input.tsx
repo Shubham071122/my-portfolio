@@ -4,7 +4,7 @@ import { WorkExperienceForm } from "@/components/admin/workExperience/work-exper
 import { createWorkExperience, updateWorkExperience } from "../../../../actions/work-experience";
 import { toast } from "sonner";
 import { useState } from "react";
-import { createWorkExperienceDto, WorkExperience } from "@/types/workExp";
+import { CreateWorkExperienceDto, WorkExperience } from "@/types/workExp";
 import { useRouter } from "next/navigation";
 
 interface WorkExperienceComponentInputProps {
@@ -16,7 +16,7 @@ export default function WorkExperienceComponentInput({ initialData }: WorkExperi
     const [isLoading, setIsLoading] = useState(false);
     const isEditing = !!initialData;
 
-    const handleSave = async (data: createWorkExperienceDto) => {
+    const handleSave = async (data: CreateWorkExperienceDto) => {
 
         setIsLoading(true);
         try {
