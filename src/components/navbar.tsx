@@ -27,8 +27,8 @@ function FluidBackground() {
   useEffect(() => {
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma !== null) {
-        // Gamma (roll) mapped to radians
-        physics.current.targetTilt = (e.gamma * Math.PI) / 180;
+        // Gamma (roll) mapped to radians - Inverted to match real-world gravity
+        physics.current.targetTilt = -(e.gamma * Math.PI) / 180;
       }
     };
 
