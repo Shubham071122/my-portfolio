@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { 
-  LayoutDashboard, 
-  Users, 
-  Briefcase, 
-  Settings, 
-  FileText, 
+import {
+  LayoutDashboard,
+  Users,
+  Briefcase,
+  Settings,
+  FileText,
   ChevronLeft,
   Menu,
   Zap,
@@ -32,7 +32,7 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <aside 
+    <aside
       className={cn(
         "relative flex flex-col border-r bg-muted/20 transition-all duration-300 ease-in-out md:h-screen",
         collapsed ? "w-16" : "w-64"
@@ -42,10 +42,10 @@ export function Sidebar() {
         {!collapsed && (
           <span className="text-lg font-bold tracking-tight">Admin CMS</span>
         )}
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="ml-auto" 
+        <Button
+          variant="ghost"
+          size="icon"
+          className="ml-auto"
           onClick={() => setCollapsed(!collapsed)}
         >
           {collapsed ? <Menu className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
@@ -54,15 +54,18 @@ export function Sidebar() {
 
       <nav className="flex-1 space-y-1 p-2">
         {sidebarItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = item.href === "/admin"
+            ? pathname === "/admin"
+            : pathname === item.href || pathname.startsWith(item.href + "/");
+
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
                 "flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                isActive 
-                  ? "bg-primary text-primary-foreground" 
+                isActive
+                  ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 collapsed && "justify-center"
               )}
@@ -75,7 +78,7 @@ export function Sidebar() {
       </nav>
 
       <div className="border-t p-4">
-        <Link 
+        <Link
           href="/"
           className={cn(
             "flex items-center text-xs text-muted-foreground hover:text-foreground",

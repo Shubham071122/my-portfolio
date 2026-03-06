@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import Markdown from "react-markdown";
+import { TechIcon } from "./tech-icon";
 
 interface Props {
   title: string;
@@ -44,7 +45,7 @@ export function ProjectCard({
     <Card
       className={
         cn(
-          "flex flex-col overflow-hidden transition-all duration-300 border ease-out h-full relative group hover:bg-gradient-to-br from-background via-muted to-background rounded-2xl",
+          "flex flex-col overflow-hidden transition-all duration-300 border ease-out h-full relative group from-background via-muted to-background rounded-2xl",
           "hover:scale-[1.03] hover:rotate-1 hover:shadow-2xl",
           className
         )
@@ -97,13 +98,14 @@ export function ProjectCard({
         {tags && tags.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
             {tags?.map((tag) => (
-              <Badge
-                className="px-1 py-0 text-[10px]"
-                variant="secondary"
-                key={tag}
-              >
-                {tag}
-              </Badge>
+              // <Badge
+              //   className="px-1 py-0 text-[10px]"
+              //   variant="secondary"
+              //   key={tag}
+              // >
+              //   {tag}
+              // </Badge>
+              <TechIcon name={tag} size={20} key={tag}/>
             ))}
           </div>
         )}

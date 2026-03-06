@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { DateInput } from "@/components/ui/date-input";
 import { Save, ArrowLeft, Upload, X, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Project, ProjectStatus, CreateProjectDto } from "@/types/project";
@@ -146,7 +147,13 @@ export function ProjectForm({ initialData, onSubmit, isLoading: parentLoading }:
                         >
                             {thumbnailPreview ? (
                                 <div className="relative w-full h-full p-2">
-                                    <img src={thumbnailPreview} alt="Thumbnail Preview" className="w-full h-full object-contain rounded-md" />
+                                    <Image 
+                                        src={thumbnailPreview} 
+                                        alt="Thumbnail Preview" 
+                                        fill 
+                                        className="object-contain p-2 rounded-md" 
+                                        unoptimized
+                                    />
                                     <Button
                                         type="button" variant="destructive" size="icon" className="absolute top-4 right-4 h-6 w-6 rounded-full"
                                         onClick={(e) => { e.stopPropagation(); handleRemoveThumbnail(); }}

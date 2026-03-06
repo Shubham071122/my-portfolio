@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { DateInput } from "@/components/ui/date-input";
 import { Save, ArrowLeft, Upload, X, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import React, { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { WorkExperience } from "@/types/workExp";
@@ -149,7 +150,13 @@ export function WorkExperienceForm({ initialData, onSubmit, isLoading: parentLoa
                         >
                             {thumbnailPreview ? (
                                 <div className="relative w-full h-full p-2">
-                                    <img src={thumbnailPreview} alt="Thumbnail Preview" className="w-full h-full object-contain rounded-md" />
+                                    <Image 
+                                        src={thumbnailPreview} 
+                                        alt="Thumbnail Preview" 
+                                        fill 
+                                        className="object-contain p-2 rounded-md" 
+                                        unoptimized
+                                    />
                                     <Button
                                         type="button" variant="destructive" size="icon" className="absolute top-4 right-4 h-6 w-6 rounded-full"
                                         onClick={(e) => { e.stopPropagation(); handleRemoveThumbnail(); }}

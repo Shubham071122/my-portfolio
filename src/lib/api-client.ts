@@ -79,11 +79,16 @@ async function request<T>(
   }
 
   if (!response.ok || !json?.success) {
-    throw new ApiError(
-      json?.message || "Request failed",
-      json?.code || response.status,
-      json,
-    );
+    const status = json?.code || response.status;
+    const message = json?.message || "Request failed";
+
+    // Global 401 handler: if unauthorized and on the client side, redirect to login
+    if (status === 401 && typeof window !== "undefined") {
+      document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      window.location.href = "/admin/login";
+    }
+
+    throw new ApiError(message, status, json);
   }
 
   return json.result;

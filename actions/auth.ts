@@ -26,7 +26,6 @@ export async function login(data: any) {
   }
 }
 
-
 export async function logout() {
   cookies().delete(COOKIE_NAME);
 }

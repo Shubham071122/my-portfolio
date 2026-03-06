@@ -16,9 +16,10 @@ export const DATA = {
     "React",
     "Next.js",
     "Typescript",
+    "Javascript",
     "Node.js",
     "Python",
-    "Postgres",
+    "PostgreSQL",
     "Docker",
     "C++",
     "MongoDB",
@@ -29,7 +30,8 @@ export const DATA = {
     "Linux",
     "Firebase",
     "Express.js",
-    "GraphQL"
+    "GraphQL",
+    "Jira"
 
   ],
   navbar: [
@@ -87,12 +89,16 @@ export const DATA = {
       logoUrl: "/earnest.jpeg",
       start: "May 2025",
       end: "Present",
+      linkedinHref: "https://www.linkedin.com/company/earnest-data-analytics/",
+      technologies: ["React", "Next.js", "Node.js", "AWS", "PostgreSQL", "TailwindCSS"],
       description:
-        "Life is great at Earnest Data Analytics! I'm building scalable web applications with Next.js, Node.js, and AWS. Collaborating with a talented team to deliver top-notch solutions for our clients. Excited to be part of this innovative journey!",
+        "Building scalable web applications with Next.js, Node.js, and AWS. Collaborating with a talented team to deliver top-notch solutions for our clients. Excited to be part of this innovative journey!",
     },
     {
       company: "Rupeestop",
       href: "https://rupeestop.com",
+      linkedinHref: "https://www.linkedin.com/company/rupeestop/",
+      technologies: ["Next.js", "Node.js", "DynamoDB", "AWS", "TailwindCSS", "Nginx"],
       badges: [],
       location: "Remote",
       title: "Full Stack Developer Intern",
@@ -100,11 +106,13 @@ export const DATA = {
       start: "Nov 2024",
       end: "Apr 2025",
       description:
-        "Developed a high-performance Next.js application with Tailwind CSS, deployed on AWS EC2 with Nginx to support 100+ concurrent users, built optimized Node.js and DynamoDB APIs, integrated Gemini AI for 50% faster data extraction across 500 records, and streamlined DevOps with GitHub Actions CI/CD pipelines, reducing deployment time by 40%.",
+        "Developed a high-performance Next.js application with Tailwind CSS, deployed on AWS EC2 with Nginx to support 100+ concurrent users.\nBuilt optimized Node.js and DynamoDB APIs.\nIntegrated Gemini AI for 50% faster data extraction across 500 records.\nStreamlined DevOps with GitHub Actions CI/CD pipelines, reducing deployment time by 40%.",
     },
     {
       company: "CalAI",
       href: "https://www.linkedin.com/company/calai-california-artificial-intelligence-institute/",
+      linkedinHref: "https://www.linkedin.com/company/calai/",
+      technologies: ["Firebase", "PayPal", "Razorpay", "Brevo", "Zoho"],
       badges: [],
       location: "Remote",
       title: "Full Stack Developer Intern",
@@ -112,11 +120,13 @@ export const DATA = {
       start: "Sep 2024",
       end: "Oct 2024",
       description:
-        "Integrated PayPal and Razorpay for secure global payments, implemented Brevo and Zoho for user tracking and automated email campaigns that boosted engagement by 25%, and designed a scalable Firebase database structure for efficient user data management.",
+        "Integrated PayPal and Razorpay for secure global payments.\nImplemented Brevo and Zoho for user tracking and automated email campaigns that boosted engagement by 25%.\nDesigned a scalable Firebase database structure for efficient user data management.",
     },
     {
       company: "Beyondriffs",
       href: "https://mitremedia.com/",
+      linkedinHref: "https://www.linkedin.com/company/beyondriffs/",
+      technologies: ["React", "Redux", "TailwindCSS", "JavaScript"],
       badges: [],
       location: "Remote",
       title: "Frontend Developer Intern",
@@ -124,7 +134,7 @@ export const DATA = {
       start: "Jun 2024",
       end: "Aug 2024",
       description:
-        "Built responsive UI components with React.js and Tailwind CSS, improved application performance by 30% through optimized Redux state management, and collaborated with UI/UX teams to enhance design quality and user satisfaction.",
+        "Built responsive UI components with React.js and Tailwind CSS.\nImproved application performance by 30% through optimized Redux state management.\nCollaborated with UI/UX teams to enhance design quality and user satisfaction.",
     },
   ],
   education: [
@@ -224,7 +234,6 @@ export const DATA = {
         "TailwindCSS",
         "Node.js",
         "Express.js",
-        "Cloudinary",
       ],
       links: [
         {
