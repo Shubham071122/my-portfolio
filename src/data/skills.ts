@@ -292,7 +292,7 @@ export const SKILLS_DATA: Record<string, SkillData> = {
   },
   googlegemini: {
     name: "Google Gemini",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg",
+    icon: "https://cdn.simpleicons.org/googlegemini",
     url: "https://gemini.google.com",
     category: "tool",
   },
@@ -311,7 +311,7 @@ export const SKILLS_DATA: Record<string, SkillData> = {
   rag: {
     name: "RAG (GenAI)",
     icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg",
-    url: "https://ethereum.org/en/developers/docs/ai/",
+    url: "https://www.mongodb.com/resources/basics/artificial-intelligence/retrieval-augmented-generation",
     category: "ai",
   },
   paypal: {

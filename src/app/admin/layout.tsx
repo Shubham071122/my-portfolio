@@ -21,7 +21,7 @@ export default function AdminLayout({
 }>) {
   const token = cookies().get("auth_token")?.value;
   const isAuthPage = !token;
-  
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -30,7 +30,7 @@ export default function AdminLayout({
           fontSans.variable
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
             <ToasterProvider />
             {isAuthPage ? (

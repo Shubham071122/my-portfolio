@@ -144,23 +144,15 @@ export default function Navbar() {
         <FluidBackground />
         {DATA.navbar.map((item) => (
           <DockIcon key={item.href}>
-            <Tooltip delayDuration={0}>
-              <TooltipTrigger asChild>
                 <Link
                   href={item.href}
                   className={cn(
                     buttonVariants({ variant: "ghost", size: "icon" }),
-                    "size-12"
+                    "size-9"
                   )}
                 >
                   <item.icon className="size-4" />
                 </Link>
-              </TooltipTrigger>
-              <TooltipContent side="top" sideOffset={10} className={tooltipStyle}>
-                <span className="text-[13px] font-medium tracking-tight leading-none">{item.label}</span>
-                <TooltipArrow className="fill-white" width={16} height={8} />
-              </TooltipContent>
-            </Tooltip>
           </DockIcon>
         ))}
         <Separator orientation="vertical" className="h-full" />
@@ -168,23 +160,15 @@ export default function Navbar() {
           .filter(([_, social]) => social.navbar)
           .map(([name, social]) => (
             <DockIcon key={name}>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={social.url}
-                    className={cn(
-                      buttonVariants({ variant: "ghost", size: "icon" }),
-                      "size-12"
-                    )}
-                  >
-                    <social.icon className="size-4" />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="top" sideOffset={10} className={tooltipStyle}>
-                  <span className="text-[13px] font-medium tracking-tight leading-none">{name}</span>
-                  <TooltipArrow className="fill-white" width={16} height={8} />
-                </TooltipContent>
-              </Tooltip>
+              <Link
+                href={social.url}
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "size-9"
+                )}
+              >
+                <social.icon className="size-4" />
+              </Link>
             </DockIcon>
           ))}
         <Separator orientation="vertical" className="h-full py-2" />

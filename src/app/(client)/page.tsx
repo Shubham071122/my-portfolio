@@ -88,7 +88,7 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 5}>
             <h2 className="text-xl font-bold">Experience</h2>
           </BlurFade>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {DATA.work.map((work, id) => (
               <BlurFade
                 key={work.company}
@@ -150,7 +150,7 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 11}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                <div className="inline-block rounded-xl px-4 py-1.5 text-sm font-medium bg-zinc-100/80 dark:bg-white/[0.08] backdrop-blur-xl border border-zinc-200/50 dark:border-white/[0.12] text-zinc-900 dark:text-zinc-100 shadow-xl dark:shadow-2xl">
                   My Projects
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
@@ -189,20 +189,20 @@ export default function Page() {
       <section id="contact" className="relative group">
         {/* Subtle Bottom Glow */}
         <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 size-72 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none z-[-1] dark:bg-blue-500/5 transition-all duration-700 group-hover:scale-125 group-hover:opacity-100" />
-        
+
         <div className="mx-auto max-w-2xl px-4 py-10 pb-16 text-center">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>
-            <div className="inline-block rounded-xl bg-white px-4 py-1.5 text-sm font-medium border border-border/50 text-black mb-4">
+            <div className="inline-block rounded-xl px-4 py-1.5 text-sm font-medium mb-4 bg-zinc-100/80 dark:bg-white/[0.08] backdrop-blur-xl border border-zinc-200/50 dark:border-white/[0.12] text-zinc-900 dark:text-zinc-100 shadow-xl dark:shadow-2xl">
               Connect
             </div>
-            
+
             <h2 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
               Let&apos;s Build Something <span className="bg-gradient-to-r from-blue-500 to-blue-400 bg-clip-text text-transparent italic font-serif">Together</span>
             </h2>
-            
+
             <p className="mx-auto max-w-[550px] text-muted-foreground text-base sm:text-lg leading-relaxed mb-10">
-              Whether you have a specific project in mind, want to discuss a potential collaboration, 
-              or just want to chat about the future of tech—my inbox is always open. 
+              Whether you have a specific project in mind, want to discuss a potential collaboration,
+              or just want to chat about the future of tech—my inbox is always open.
               Let’s create something amazing.
             </p>
 
