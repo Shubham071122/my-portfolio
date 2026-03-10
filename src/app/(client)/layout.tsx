@@ -4,9 +4,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ToasterProvider } from "@/components/toaster-provider";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "../globals.css";
+import StructuredData from "@/components/structured-data";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,6 +21,26 @@ export const metadata: Metadata = {
     template: `%s | ${DATA.name}`,
   },
   description: DATA.description,
+  keywords: [
+    "Full Stack Developer",
+    "Web Development",
+    "React",
+    "Next.js",
+    "Node.js",
+    "AWS",
+    "TypeScript",
+    "Software Engineer",
+    "Portfolio",
+    "Shubham",
+    "DevOps",
+    "Cloud Computing",
+  ],
+  authors: [{ name: DATA.name, url: DATA.url }],
+  creator: DATA.name,
+  publisher: DATA.name,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: `${DATA.name}`,
     description: DATA.description,
@@ -27,6 +48,14 @@ export const metadata: Metadata = {
     siteName: `${DATA.name}`,
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/me.jpeg",
+        width: 800,
+        height: 800,
+        alt: DATA.name,
+      },
+    ],
   },
   robots: {
     index: true,
@@ -42,11 +71,21 @@ export const metadata: Metadata = {
   twitter: {
     title: `${DATA.name}`,
     card: "summary_large_image",
+    creator: "@ShubhamRawat_7",
+    description: DATA.description,
+    images: ["/me.jpeg"],
   },
   verification: {
-    google: "",
-    yandex: "",
+    google: "9xOKjilHIgxPVMWktiZCP9nNdCWpvA5J6YWrGwBoqHk",
   },
+  category: "technology",
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
 };
 
 export default function RootLayout({
@@ -71,6 +110,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
             <ToasterProvider />
+            <StructuredData />
             {children}
             <Navbar />
           </TooltipProvider>

@@ -14,15 +14,20 @@ import { ContactCTA } from "@/components/contact-cta";
 const BLUR_FADE_DELAY = 0.04;
 
 export const metadata = {
-  title: DATA.name + " | Full Stactk Developer",
+  title: DATA.name + " | Full Stack Developer",
   description: DATA.description,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: DATA.name + " | Full Stack Developer",
     description: DATA.summary,
     url: DATA.url,
     images: [
       {
-        url: DATA.avatarUrl.startsWith('http') ? DATA.avatarUrl : DATA.url + DATA.avatarUrl,
+        url: DATA.avatarUrl.startsWith("http")
+          ? DATA.avatarUrl
+          : DATA.url + DATA.avatarUrl,
         alt: DATA.name,
       },
     ],
@@ -32,7 +37,11 @@ export const metadata = {
     card: "summary_large_image",
     title: DATA.name + " | Portfolio",
     description: DATA.summary,
-    images: [DATA.avatarUrl.startsWith('http') ? DATA.avatarUrl : DATA.url + DATA.avatarUrl],
+    images: [
+      DATA.avatarUrl.startsWith("http")
+        ? DATA.avatarUrl
+        : DATA.url + DATA.avatarUrl,
+    ],
   },
 };
 
