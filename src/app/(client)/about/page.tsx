@@ -38,7 +38,7 @@ export default function AboutPage() {
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 2}>
                     <p className="text-muted-foreground text-base sm:text-xl text-center sm:text-left max-w-2xl leading-relaxed">
-                        A developer's journey is more than just syntax. It's about curiosity, building systems, and solving real-world puzzles.
+                        A developer&apos;s journey is more than just syntax. It&apos;s about curiosity, building systems, and solving real-world puzzles.
                     </p>
                 </BlurFade>
             </section>
@@ -56,7 +56,7 @@ export default function AboutPage() {
                             </div>
                             <h2 className="text-xl sm:text-2xl font-bold">I build software that makes sense.</h2>
                             <p className="text-muted-foreground leading-relaxed text-base sm:text-base italic">
-                                "{DATA.summary}"
+                                &quot;{DATA.summary}&quot;
                             </p>
                         </div>
                         <div className="mt-8 flex items-center gap-4">
@@ -158,7 +158,7 @@ export default function AboutPage() {
                             <span className="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent italic font-serif">next big thing?</span>
                         </h3>
                         <p className="text-zinc-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-                            I'm currently looking for new challenges and collaborations. Whether you have a specific idea or just want to explore possibilities, let's create something meaningful together.
+                            I&apos;m currently looking for new challenges and collaborations. Whether you have a specific idea or just want to explore possibilities, let&apos;s create something meaningful together.
                         </p>
                     </div>
 
