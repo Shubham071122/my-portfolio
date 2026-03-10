@@ -1,5 +1,11 @@
 import { Icons } from "@/components/icons";
-import { HomeIcon, NotebookIcon } from "lucide-react";
+import {
+  HomeIcon,
+  NotebookIcon,
+  UserIcon,
+  BriefcaseIcon,
+  MailIcon
+} from "lucide-react";
 
 export const DATA = {
   name: "Shubham",
@@ -8,7 +14,7 @@ export const DATA = {
   location: "New Delhi, India",
   locationLink: "https://www.google.com/maps/place/new+delhi",
   description:
-    "Full Stack Developer, Love Building Scalable Web Applications & DevOps Enthusiast.",
+    "Full Stack Developer | Building Scalable Web Applications | DevOps & Cloud",
   summary:
     "I’m a Full Stack Developer who loves building fast, user-friendly web applications and scalable backend systems. I enjoy turning ideas into real products using React, Next.js, Node.js, and AWS. I’m passionate about clean code, problem-solving, and constantly learning new technologies to improve how things work.",
   avatarUrl: "/me.jpeg",
@@ -36,7 +42,10 @@ export const DATA = {
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
+    { href: "/about", icon: UserIcon, label: "About" },
+    { href: "/projects", icon: BriefcaseIcon, label: "Projects" },
     { href: "/blog", icon: NotebookIcon, label: "Blog" },
+    { href: "/contact", icon: MailIcon, label: "Contact" },
   ],
   contact: {
     email: "shubhamkumar.work3@gmail.com",
@@ -69,13 +78,13 @@ export const DATA = {
       //   icon: Icons.youtube,
       //   navbar: true,
       // },
-      email: {
-        name: "Send Email",
-        url: "#",
-        icon: Icons.email,
+      // email: {
+      //   name: "Send Email",
+      //   url: "#",
+      //   icon: Icons.email,
 
-        navbar: false,
-      },
+      //   navbar: false,
+      // },
     },
   },
 

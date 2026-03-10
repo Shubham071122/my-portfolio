@@ -144,33 +144,17 @@ export default function Navbar() {
         <FluidBackground />
         {DATA.navbar.map((item) => (
           <DockIcon key={item.href}>
-                <Link
-                  href={item.href}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "icon" }),
-                    "size-9"
-                  )}
-                >
-                  <item.icon className="size-4" />
-                </Link>
+            <Link
+              href={item.href}
+              className={cn(
+                buttonVariants({ variant: "ghost", size: "icon" }),
+                "size-9"
+              )}
+            >
+              <item.icon className="size-4" />
+            </Link>
           </DockIcon>
         ))}
-        <Separator orientation="vertical" className="h-full" />
-        {Object.entries(DATA.contact.social)
-          .filter(([_, social]) => social.navbar)
-          .map(([name, social]) => (
-            <DockIcon key={name}>
-              <Link
-                href={social.url}
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "size-9"
-                )}
-              >
-                <social.icon className="size-4" />
-              </Link>
-            </DockIcon>
-          ))}
         <Separator orientation="vertical" className="h-full py-2" />
         <DockIcon>
           <Tooltip delayDuration={0}>

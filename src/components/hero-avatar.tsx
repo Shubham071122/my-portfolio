@@ -17,7 +17,7 @@ export function HeroAvatar({ name, avatarUrl, initials }: HeroAvatarProps) {
             className="relative group"
         >
             <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-            <Avatar className="size-32 sm:size-36 border-4 border-background shadow-2xl ring-1 ring-border/50">
+            <Avatar className="size-36 sm:size-44 border-4 border-background shadow-2xl ring-1 ring-border/50">
                 <AvatarImage alt={name} src={avatarUrl} className="object-cover" />
                 <AvatarFallback className="text-2xl font-bold bg-muted">{initials}</AvatarFallback>
             </Avatar>

@@ -11,6 +11,8 @@ import { ExperienceCard } from "@/components/experience-card";
 import { HeroAvatar } from "@/components/hero-avatar";
 import { ContactCTA } from "@/components/contact-cta";
 
+import SocialLinks from "@/components/social-links";
+
 const BLUR_FADE_DELAY = 0.04;
 
 export const metadata = {
@@ -87,9 +89,15 @@ export default function Page() {
           <h2 className="text-xl font-bold">About</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <Markdown className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert">
+          <Markdown className="prose max-w-full text-pretty font-sans text-sm sm:text-base text-muted-foreground dark:prose-invert">
             {DATA.summary}
           </Markdown>
+          <Link href="/about" className="text-blue-500 hover:underline text-sm font-medium mt-2 inline-block">
+            Read more about my journey →
+          </Link>
+          <div className="mt-4">
+            <SocialLinks />
+          </div>
         </BlurFade>
       </section>
       <section id="work">
@@ -193,6 +201,16 @@ export default function Page() {
               </BlurFade>
             ))}
           </div>
+          <BlurFade delay={BLUR_FADE_DELAY * 15}>
+            <div className="flex justify-center mt-8">
+              <Link
+                href="/projects"
+                className="inline-flex items-center justify-center rounded-xl px-8 py-3 text-sm font-bold transition-all bg-zinc-100 dark:bg-white/[0.08] hover:bg-zinc-200 dark:hover:bg-white/[0.12] border border-zinc-200/50 dark:border-white/[0.12] shadow-sm"
+              >
+                View All Projects
+              </Link>
+            </div>
+          </BlurFade>
         </div>
       </section>
       <section id="contact" className="relative group">

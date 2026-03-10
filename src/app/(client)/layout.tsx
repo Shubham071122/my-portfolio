@@ -9,6 +9,8 @@ import { Inter as FontSans } from "next/font/google";
 import "../globals.css";
 import StructuredData from "@/components/structured-data";
 
+import Footer from "@/components/footer";
+
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -103,7 +105,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased max-w-2xl mx-auto pb-12 pt-10 sm:pb-24 sm:pt-18 px-4 sm:px-6",
+          "min-h-screen bg-background font-sans antialiased max-w-3xl mx-auto pb-12 pt-10 sm:pb-24 sm:pt-18 px-4 sm:px-6",
           fontSans.variable
         )}
       >
@@ -112,6 +114,7 @@ export default function RootLayout({
             <ToasterProvider />
             <StructuredData />
             {children}
+            <Footer />
             <Navbar />
           </TooltipProvider>
         </ThemeProvider>
