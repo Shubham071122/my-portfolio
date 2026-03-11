@@ -12,6 +12,7 @@ import { HeroAvatar } from "@/components/hero-avatar";
 import { ContactCTA } from "@/components/contact-cta";
 
 import SocialLinks from "@/components/social-links";
+import { ArrowRight } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -182,7 +183,7 @@ export default function Page() {
             </div>
           </BlurFade>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {DATA.projects.map((project, id) => (
+            {DATA.projects.slice(0, 2).map((project, id) => (
               <BlurFade
                 key={project.title}
                 delay={BLUR_FADE_DELAY * 12 + id * 0.05}
@@ -202,12 +203,13 @@ export default function Page() {
             ))}
           </div>
           <BlurFade delay={BLUR_FADE_DELAY * 15}>
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-12">
               <Link
                 href="/projects"
-                className="inline-flex items-center justify-center rounded-xl px-8 py-3 text-sm font-bold transition-all bg-zinc-100 dark:bg-white/[0.08] hover:bg-zinc-200 dark:hover:bg-white/[0.12] border border-zinc-200/50 dark:border-white/[0.12] shadow-sm"
+                className="group relative inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl font-bold transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] overflow-hidden"
               >
-                View All Projects
+                <span className="relative z-10">View All Projects</span>
+                <ArrowRight className="size-4 relative z-10 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </BlurFade>

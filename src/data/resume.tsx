@@ -44,7 +44,7 @@ export const DATA = {
     { href: "/", icon: HomeIcon, label: "Home" },
     { href: "/about", icon: UserIcon, label: "About" },
     { href: "/projects", icon: BriefcaseIcon, label: "Projects" },
-    { href: "/blog", icon: NotebookIcon, label: "Blog" },
+    { href: "/blogs", icon: NotebookIcon, label: "Blogs" },
     { href: "/contact", icon: MailIcon, label: "Contact" },
   ],
   contact: {

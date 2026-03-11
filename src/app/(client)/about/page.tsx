@@ -33,7 +33,7 @@ export default function AboutPage() {
             <section className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY}>
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-6xl text-center sm:text-left">
-                        Behind the <span className="text-blue-500 italic">Code</span>
+                        Behind the <span className="text-blue-500 italic font-serif">Code</span>
                     </h1>
                 </BlurFade>
                 <BlurFade delay={BLUR_FADE_DELAY * 2}>

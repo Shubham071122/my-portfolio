@@ -26,7 +26,7 @@ export function StaticPagesClient({ posts }: StaticPagesClientProps) {
             header: "URL Path",
             render: (item: any) => (
                 <code className="text-[10px] bg-muted px-1 py-0.5 rounded">
-                    /blog/{item.slug}
+                    /blogs/{item.slug}
                 </code>
             ),
         },

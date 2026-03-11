@@ -22,6 +22,7 @@ const sidebarItems = [
   { name: "Work Experience", href: "/admin/work-experience", icon: Briefcase },
   { name: "Projects", href: "/admin/projects", icon: Computer },
   { name: "Skills", href: "/admin/skills", icon: Zap },
+  { name: "Blogs", href: "/admin/blogs", icon: FileText },
   { name: "User Management", href: "/admin/users", icon: Users },
   { name: "Static Pages", href: "/admin/pages", icon: FileText },
   { name: "Settings", href: "/admin/settings", icon: Settings },

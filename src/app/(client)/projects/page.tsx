@@ -16,7 +16,7 @@ export default function ProjectsPage() {
             <section id="projects-header" className="space-y-4 mb-12">
                 <BlurFade delay={BLUR_FADE_DELAY}>
                     <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-center sm:text-left">
-                        My <span className="text-blue-500">Work</span>
+                        My <span className="text-blue-500 italic font-serif">Work</span>
                     </h1>
                     <p className="text-muted-foreground text-base sm:text-xl max-w-[800px] mt-4">
                         A collection of projects I&apos;ve built, ranging from experimental AI agents to production-ready web applications. Each project represents a unique challenge and a step forward in my journey.
