@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import { Blog } from "@/types/blog";
 import Link from "next/link";
-import Image from "next/image";
-import { Search, Calendar, ChevronRight } from "lucide-react";
+import { Search, Calendar, ChevronRight, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import ThumbnailWithFallback from "./thumbnail-with-fallback";
+import { searchBlogs } from "../../../actions/blog";
 
 interface BlogListClientProps {
     initialBlogs: Blog[];
@@ -17,12 +17,35 @@ const BLUR_FADE_DELAY = 0.04;
 
 export default function BlogListClient({ initialBlogs }: BlogListClientProps) {
     const [searchQuery, setSearchQuery] = useState("");
+    const [blogs, setBlogs] = useState<Blog[]>(initialBlogs);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
-    const filteredBlogs = initialBlogs.filter((blog) =>
-        blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blog.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blog.hashtags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (!searchQuery.trim()) {
+                setBlogs(initialBlogs);
+                setIsLoading(false);
+                return;
+            }
+
+            setIsLoading(true);
+            try {
+                const results = await searchBlogs(searchQuery);
+                setBlogs(results);
+            } catch (err) {
+                console.error("SEARCH_ERROR:", err);
+            } finally {
+                setIsLoading(false);
+            }
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchQuery, initialBlogs]);
 
     return (
         <div className="space-y-12">
@@ -35,11 +58,16 @@ export default function BlogListClient({ initialBlogs }: BlogListClientProps) {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
+                {isLoading && (
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                        <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                    </div>
+                )}
             </div>
 
-            {filteredBlogs.length > 0 ? (
+            {blogs.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {filteredBlogs.map((blog, idx) => (
+                    {blogs.map((blog, idx) => (
                         <BlurFade key={blog.id} delay={BLUR_FADE_DELAY * (idx + 1)}>
                             <Link href={`/blogs/${blog.slug}`} className="group block h-full">
                                 <article className="flex flex-col h-full bg-white dark:bg-zinc-900/50 rounded-2xl overflow-hidden border border-zinc-200/50 dark:border-white/[0.08] shadow-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 hover:-translate-y-1">
@@ -55,11 +83,11 @@ export default function BlogListClient({ initialBlogs }: BlogListClientProps) {
                                         <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-muted-foreground">
                                             <div className="flex items-center gap-1.5">
                                                 <Calendar className="h-3 w-3" />
-                                                {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                                                {isMounted ? new Date(blog.createdAt).toLocaleDateString("en-US", {
                                                     month: "short",
                                                     day: "numeric",
                                                     year: "numeric"
-                                                })}
+                                                }) : "Loading..."}
                                             </div>
                                             <div className="h-1 w-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
                                             <div className="text-primary/80">

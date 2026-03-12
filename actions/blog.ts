@@ -2,20 +2,31 @@
 
 import { api } from "@/lib/api-client";
 import { Blog, CreateBlogDto, UpdateBlogDto } from "@/types/blog";
-import { revalidatePath } from "next/cache";
+import { revalidateTag, unstable_cache } from "next/cache";
 
+// Admin Blog Actions
 export async function getAdminBlogs(): Promise<Blog[]> {
-  return api.get<Blog[]>("/blogs/admin/list");
+  const fetcher = unstable_cache(
+    async () => api.get<Blog[]>("/blogs/admin/list"),
+    ["admin-blogs-list"],
+    { tags: ["admin-blogs"] }
+  );
+  return fetcher();
 }
 
 export async function getBlogById(id: string): Promise<Blog> {
-  return api.get<Blog>(`/blogs/admin/${id}`);
+  const fetcher = unstable_cache(
+    async (bid: string) => api.get<Blog>(`/blogs/admin/${bid}`),
+    ["admin-blog-detail"],
+    { tags: [`admin-blog-${id}`] }
+  );
+  return fetcher(id);
 }
 
 export async function createBlog(data: CreateBlogDto): Promise<Blog> {
   const result = await api.post<Blog>("/blogs", data);
-  revalidatePath("/admin/blogs");
-  revalidatePath("/blogs");
+  revalidateTag("blogs");
+  revalidateTag("admin-blogs");
   return result;
 }
 
@@ -24,32 +35,45 @@ export async function updateBlog(
   data: UpdateBlogDto,
 ): Promise<Blog> {
   const result = await api.patch<Blog>(`/blogs/${id}`, data);
-  revalidatePath("/admin/blogs");
-  revalidatePath(`/blogs/${result.slug}`);
-  revalidatePath("/blogs");
+  revalidateTag("blogs");
+  revalidateTag("admin-blogs");
+  revalidateTag(`admin-blog-${id}`);
+  revalidateTag(`blog-${result.slug}`);
   return result;
 }
 
 export async function archiveBlog(id: string): Promise<Blog> {
   const result = await api.patch<Blog>(`/blogs/archive/${id}`);
-  revalidatePath("/admin/blogs");
-  revalidatePath("/blogs");
+  revalidateTag("blogs");
+  revalidateTag("admin-blogs");
+  revalidateTag(`admin-blog-${id}`);
+  revalidateTag(`blog-${result.slug}`);
   return result;
 }
 
 export async function deleteBlog(id: string): Promise<void> {
   await api.delete(`/blogs/${id}`);
-  revalidatePath("/admin/blogs");
-  revalidatePath("/blogs");
+  revalidateTag("blogs");
+  revalidateTag("admin-blogs");
 }
 
 // Public Blog Actions
 export async function getPublishedBlogs(): Promise<Blog[]> {
-  return api.get<Blog[]>("/blogs");
+  const fetcher = unstable_cache(
+    async () => api.get<Blog[]>("/blogs"),
+    ["public-blogs-list"],
+    { tags: ["blogs"] }
+  );
+  return fetcher();
 }
 
 export async function getBlogBySlug(slug: string): Promise<Blog> {
-  return api.get<Blog>(`/blogs/${slug}`);
+  const fetcher = unstable_cache(
+    async (s: string) => api.get<Blog>(`/blogs/${s}`),
+    ["public-blog-detail"],
+    { tags: [`blog-${slug}`] }
+  );
+  return fetcher(slug);
 }
 
 export async function searchBlogs(query: string): Promise<Blog[]> {

@@ -34,7 +34,7 @@ export default async function BlogPage() {
         </BlurFade>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-0">
+      <div className="max-w-5xl mx-auto">
         <BlogListClient initialBlogs={blogs} />
       </div>
     </section>
