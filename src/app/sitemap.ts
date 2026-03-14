@@ -1,15 +1,20 @@
 import { DATA } from "@/data/resume";
-import { getBlogPosts } from "@/data/blog";
+import { getPublishedBlogs } from "../../actions/blog";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = DATA.url;
 
-  const blogPosts = await getBlogPosts();
-  const blogUrls = blogPosts.map((post) => ({
-    url: `${baseUrl}/blogs/${post.slug}`,
-    lastModified: new Date().toISOString(),
-  }));
+  let dynamicBlogUrls: MetadataRoute.Sitemap = [];
+  try {
+    const dynamicBlogs = await getPublishedBlogs();
+    dynamicBlogUrls = dynamicBlogs.map((post) => ({
+      url: `${baseUrl}/blogs/${post.slug}`,
+      lastModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : new Date().toISOString(),
+    }));
+  } catch (error) {
+    console.error("Failed to fetch dynamic blogs for sitemap:", error);
+  }
 
   const routes = ["", "/blogs", "/about", "/projects", "/contact"].map(
     (route) => ({
@@ -18,5 +23,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  return [...routes, ...blogUrls];
+  return [...routes, ...dynamicBlogUrls];
 }

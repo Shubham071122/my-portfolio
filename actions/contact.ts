@@ -6,7 +6,6 @@ import { headers } from "next/headers";
 interface ContactData {
   fullName: string;
   email: string;
-  subject: string;
   message: string;
 }
 
@@ -34,7 +33,7 @@ export async function sendContactMessage(data: ContactData) {
     rateLimitMap.set(ip, { count: 1, resetTime: now + WINDOW_MS });
   }
 
-  const { fullName, email, subject, message } = data;
+  const { fullName, email, message } = data;
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -51,13 +50,12 @@ export async function sendContactMessage(data: ContactData) {
       from: `"${fullName}" <${process.env.SMTP_USER}>`,
       replyTo: email,
       to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
-      subject: `Portfolio Contact: ${subject}`,
+      subject: `Portfolio Contact from ${fullName}`,
       text: `Name: ${fullName}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
           <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">New Portfolio Message</h2>
           <p><strong>From:</strong> ${fullName} (${email})</p>
-          <p><strong>Subject:</strong> ${subject}</p>
           <div style="margin-top: 20px; padding: 15px; background-color: #f9fafb; border-radius: 5px;">
             <p style="white-space: pre-wrap;">${message}</p>
           </div>
