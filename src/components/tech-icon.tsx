@@ -84,10 +84,10 @@ export const TechIcon = ({
                 <TooltipContent
                     side="top"
                     sideOffset={12}
-                    className="bg-white text-black border-none px-2 py-1 rounded-xl shadow-2xl overflow-visible"
+                    className="bg-black dark:bg-white text-white dark:text-black border-none px-2 py-1 rounded-xl shadow-2xl overflow-visible"
                 >
                     <span className="text-[13px] font-medium tracking-tight leading-none">{skill.name}</span>
-                    <TooltipArrow className="fill-white" width={16} height={8} />
+                    <TooltipArrow className="fill-black dark:fill-white" width={16} height={8} />
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>

@@ -49,7 +49,7 @@ export const ExperienceCard = ({
                             src={logoUrl}
                             alt={company}
                             fill
-                            className="object-contain p-2"
+                            className="object-cover"
                         />
                     </div>
                 </div>
