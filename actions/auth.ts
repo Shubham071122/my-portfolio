@@ -13,7 +13,7 @@ export async function login(data: any) {
     if (result && result.token) {
       cookies().set(COOKIE_NAME, result.token, {
         path: "/",
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 60 * 60 * 24 * 7, // 7 days

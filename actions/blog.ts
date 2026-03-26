@@ -6,21 +6,11 @@ import { revalidateTag, unstable_cache } from "next/cache";
 
 // Admin Blog Actions
 export async function getAdminBlogs(): Promise<Blog[]> {
-  const fetcher = unstable_cache(
-    async () => api.get<Blog[]>("/blogs/admin/list"),
-    ["admin-blogs-list"],
-    { tags: ["admin-blogs"] }
-  );
-  return fetcher();
+  return api.get<Blog[]>("/blogs/admin/list");
 }
 
 export async function getBlogById(id: string): Promise<Blog> {
-  const fetcher = unstable_cache(
-    async (bid: string) => api.get<Blog>(`/blogs/admin/${bid}`),
-    ["admin-blog-detail"],
-    { tags: [`admin-blog-${id}`] }
-  );
-  return fetcher(id);
+  return api.get<Blog>(`/blogs/admin/${id}`);
 }
 
 export async function createBlog(data: CreateBlogDto): Promise<Blog> {

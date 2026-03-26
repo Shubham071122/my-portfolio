@@ -52,7 +52,8 @@ async function request<T>(
     url += `?${search.toString()}`;
   }
 
-  const token = getAuthToken();
+  const existingAuthHeader = (headers as Record<string, string>)?.["Authorization"] || (headers as Record<string, string>)?.["authorization"];
+  const token = existingAuthHeader ? null : getAuthToken();
 
   const isFormData = rest.body instanceof FormData;
 
