@@ -80,13 +80,14 @@ const CodeBlock = ({ children, className, inline }: CodeBlockProps) => {
 
 export default function MarkdownContent({ content }: { content: string }) {
     return (
-        <div className="prose dark:prose-invert prose-headings:font-black prose-headings:tracking-tighter prose-p:leading-relaxed prose-p:text-zinc-600 dark:prose-p:text-zinc-300 prose-img:rounded-3xl prose-a:text-primary prose-code:text-primary max-w-none">
+        <div className="prose dark:prose-invert prose-headings:font-black prose-headings:tracking-tighter prose-p:leading-relaxed prose-p:text-zinc-600 dark:prose-p:text-zinc-300 prose-img:rounded-3xl prose-a:text-primary prose-code:text-primary prose-code:before:content-none prose-code:after:content-none max-w-none">
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                    code({ node, inline, className, children, ...props }: any) {
+                    code({ node, className, children, ...props }: any) {
+                        const isInline = !className?.startsWith("language-") && !String(children).includes("\n");
                         return (
-                            <CodeBlock inline={inline} className={className}>
+                            <CodeBlock inline={isInline} className={className}>
                                 {children}
                             </CodeBlock>
                         );
