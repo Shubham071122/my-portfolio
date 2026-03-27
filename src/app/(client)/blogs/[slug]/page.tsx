@@ -1,4 +1,4 @@
-import { getBlogBySlug } from "../../../../../actions/blog";
+import { getBlogBySlug, getPublishedBlogs } from "../../../../../actions/blog";
 import BlurFade from "@/components/magicui/blur-fade";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -8,6 +8,11 @@ import Link from "next/link";
 import { Metadata } from "next";
 import ShareButton from "@/components/blog/share-button";
 import ThumbnailWithFallback from "@/components/blog/thumbnail-with-fallback";
+import NextArticle from "@/components/blog/next-article";
+import { calculateReadTime } from "@/lib/utils";
+import { Suspense } from "react";
+import { cookies } from "next/headers";
+import BlogHistoryTracker from "@/components/blog/blog-history-tracker";
 
 interface BlogDetailsPageProps {
   params: {
@@ -48,12 +53,11 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
     notFound();
   }
 
-  const wordsPerMinute = 200;
-  const wordCount = blog.content.split(/\s+/).length;
-  const readTime = Math.ceil(wordCount / wordsPerMinute);
+  const readTime = calculateReadTime(blog.content);
 
   return (
     <article className="max-w-3xl mx-auto space-y-10">
+      <BlogHistoryTracker slug={params.slug} />
       <BlurFade delay={BLUR_FADE_DELAY}>
         <Link
           href="/blogs"
@@ -66,8 +70,21 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
 
       <div className="space-y-6">
         <BlurFade delay={BLUR_FADE_DELAY * 2}>
-          <div className="flex items-center gap-3 text-sm font-bold text-primary uppercase tracking-widest">
-            {blog.hashtags?.[0] || "Architecture"}
+          <div className="flex flex-wrap items-center gap-2">
+            {blog.hashtags && blog.hashtags.length > 0 ? (
+              blog.hashtags.slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 text-[10px] font-bold text-primary uppercase tracking-widest rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md shadow-sm"
+                >
+                  {tag}
+                </span>
+              ))
+            ) : (
+              <span className="px-3 py-1 text-[10px] font-bold text-primary uppercase tracking-widest rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md shadow-sm">
+                Architecture
+              </span>
+            )}
           </div>
         </BlurFade>
 
@@ -109,7 +126,14 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
         <MarkdownContent content={blog.content} />
       </BlurFade>
 
-      <BlurFade delay={BLUR_FADE_DELAY * 7}>
+      <Suspense fallback={<RelatedBlogSkeleton />}>
+        <RecommendedArticles
+          currentSlug={params.slug}
+          hashtags={blog.hashtags}
+        />
+      </Suspense>
+
+      <BlurFade delay={BLUR_FADE_DELAY * 7.5}>
         <div className="py-12 border-t border-zinc-200/50 dark:border-white/[0.08] flex gap-6 flex-row sm:items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="relative h-12 w-12 overflow-hidden rounded-2xl border border-zinc-200/50 dark:border-white/[0.08]">
@@ -132,5 +156,59 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
         </div>
       </BlurFade>
     </article>
+  );
+}
+
+async function RecommendedArticles({
+  currentSlug,
+  hashtags,
+}: {
+  currentSlug: string;
+  hashtags: string[];
+}) {
+  const cookieStore = cookies();
+  const historyCookie = cookieStore.get("read_history")?.value;
+  let history: string[] = [];
+  try {
+    if (historyCookie) {
+      history = JSON.parse(decodeURIComponent(historyCookie));
+    }
+  } catch (e) {}
+
+  const allBlogs = await getPublishedBlogs();
+  if (!allBlogs || allBlogs.length <= 1) return null;
+
+  const nextBlog =
+    allBlogs
+      .filter((b) => b.slug !== currentSlug && !history.includes(b.slug))
+      .find((b) => b.hashtags?.some((tag) => hashtags?.includes(tag))) ||
+    allBlogs.find((b) => b.slug !== currentSlug && !history.includes(b.slug)) ||
+    allBlogs[allBlogs.findIndex((b) => b.slug === currentSlug) + 1] ||
+    allBlogs[0];
+
+  if (!nextBlog || nextBlog.slug === currentSlug) return null;
+
+  const nextBlogFull = await getBlogBySlug(nextBlog.slug);
+
+  return (
+    <BlurFade delay={BLUR_FADE_DELAY}>
+      <div className="pt-12 pb-6">
+        <h4 className="text-xs font-bold text-primary uppercase tracking-[0.3em] mb-8 text-center opacity-60">
+          Keep Reading
+        </h4>
+        <NextArticle blog={nextBlogFull} />
+      </div>
+    </BlurFade>
+  );
+}
+
+function RelatedBlogSkeleton() {
+  return (
+    <div className="pt-12 pb-6">
+      <h4 className="text-xs font-bold text-primary uppercase tracking-[0.3em] mb-8 text-center opacity-60">
+        Keep Reading
+      </h4>
+      <div className="h-[180px] w-full bg-zinc-50 dark:bg-white/[0.02] rounded-[2rem] border border-zinc-200/50 dark:border-white/[0.08] animate-pulse" />
+    </div>
   );
 }
