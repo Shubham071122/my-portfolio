@@ -90,6 +90,19 @@ export const DATA = {
 
   work: [
     {
+      company: "Plynk",
+      href: "https://plynk.in",
+      badges: ["Active Development", "Beta"],
+      location: "Self-Project",
+      title: "Co-Founder & Lead Developer",
+      logoUrl: "/plynk.png",
+      start: "Feb 2026",
+      end: "Present",
+      description:
+        "Building a platform for developers and digital creators. Currently developing a custom username system and focusing on a high-end UI with glassmorphism design. Handling the full-stack architecture using Next.js, Node.js, and PostgreSQL.",
+      technologies: ["Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "Prisma", "TailwindCSS"],
+    },
+    {
       company: "Earnest Data Analytics",
       href: "https://earnestdata-analytics.in/",
       badges: [],
@@ -97,11 +110,11 @@ export const DATA = {
       title: "Full Stack Developer",
       logoUrl: "/earnest.jpeg",
       start: "May 2025",
-      end: "Present",
+      end: "Mar 2026",
       linkedinHref: "https://www.linkedin.com/company/earnest-data-analytics/",
-      technologies: ["React", "Next.js", "Node.js", "AWS", "PostgreSQL", "TailwindCSS"],
+      technologies: ["React", "Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "AWS", "TailwindCSS", "GitHub Actions"],
       description:
-        "Building scalable web applications with Next.js, Node.js, and AWS. Collaborating with a talented team to deliver top-notch solutions for our clients. Excited to be part of this innovative journey!",
+        "Delivered production ready features for a live application, contributing to ~20% improvement in user engagement.\nBuilt and optimized full-stack features using Next.js, TypeScript, Node.js, and Express, improving performance and reducing UI load time by ~25%.\nDesigned and integrated REST APIs, ensuring efficient data flow between frontend and backend services.\nPerformed backend testing (unit & API testing) to ensure reliability, correctness, and stability of services.\nWorked closely with frontend, backend, and design teams to ensure seamless integration and timely delivery.\nDeveloped reusable UI components and modular backend services, improving code maintainability and development speed.\nStreamlined deployments by implementing CI/CD pipelines using GitHub Actions, reducing release cycles and manual effort.",
     },
     {
       company: "Rupeestop",
