@@ -80,7 +80,7 @@ export const ExperienceCard = ({
                                 {isWorking && (
                                     <div className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20">
                                         <div className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                        <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Working</span>
+                                        <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{company.toLocaleLowerCase() === "plynk" ? "Building" : "Working"}</span>
                                     </div>
                                 )}
                                 <button
@@ -97,8 +97,8 @@ export const ExperienceCard = ({
                         </div>
 
                         <div className="flex flex-row sm:flex-col justify-between items-center sm:items-end sm:text-right gap-1 pt-1 sm:pt-0">
-                            <p className="text-[10px] sm:text-xs font-semibold tabular-nums text-muted-foreground/80">{period}</p>
-                            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-medium">{locationType}</p>
+                            <p className="text-[10px] sm:text-xs font-semibold tabular-nums text-muted-foreground/80">{company.toLocaleLowerCase() === "plynk" ? "" : period}</p>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-medium">{company.toLocaleLowerCase() === "plynk" ? "" : locationType}</p>
                         </div>
                     </div>
 
