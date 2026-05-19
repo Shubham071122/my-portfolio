@@ -114,7 +114,7 @@ export const DATA = {
       linkedinHref: "https://www.linkedin.com/company/earnest-data-analytics/",
       technologies: ["React", "Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "AWS", "TailwindCSS", "GitHub Actions"],
       description:
-        "Delivered production ready features for a live application, contributing to ~20% improvement in user engagement.\nBuilt and optimized full-stack features using Next.js, TypeScript, Node.js, and Express, improving performance and reducing UI load time by ~25%.\nDesigned and integrated REST APIs, ensuring efficient data flow between frontend and backend services.\nPerformed backend testing (unit & API testing) to ensure reliability, correctness, and stability of services.\nWorked closely with frontend, backend, and design teams to ensure seamless integration and timely delivery.\nDeveloped reusable UI components and modular backend services, improving code maintainability and development speed.\nStreamlined deployments by implementing CI/CD pipelines using GitHub Actions, reducing release cycles and manual effort.",
+        "Developed and shipped production features for a CRM and ONDC-integrated rewards platform in a Next.js 14 + TypeScript + Node.js/Express stack, contributing to a 20% increase in feature adoption and improved user workflows.\nReduced frontend load time by 25% through code splitting, lazy loading, and API response caching on high-traffic pages.\nDesigned and versioned RESTful APIs for reward workflows, promo-code transactions, and user management with structured validation, error normalization, and pagination — improving frontend/backend integration and API consistency.\nBuilt reusable backend service modules (auth middleware, logging, error handling) adopted across multiple features, reducing per-feature setup time by 30%.\nAchieved 85%+ test coverage on critical API flows using Jest + Supertest, reducing production regressions across multiple release cycles.\nAutomated CI/CD pipeline (GitHub Actions → Docker → AWS ECS), cutting deploy time from manual 2-hour releases to sub-20-minute automated runs.",
     },
     {
       company: "Rupeestop",
@@ -128,7 +128,7 @@ export const DATA = {
       start: "Nov 2024",
       end: "Apr 2025",
       description:
-        "Developed a high-performance Next.js application with Tailwind CSS, deployed on AWS EC2 with Nginx to support 100+ concurrent users.\nBuilt optimized Node.js and DynamoDB APIs.\nIntegrated Gemini AI for 50% faster data extraction across 500 records.\nStreamlined DevOps with GitHub Actions CI/CD pipelines, reducing deployment time by 40%.",
+        "Engineered a production Next.js application deployed on AWS EC2 with Nginx for load balancing, sustaining 100+ concurrent users under load.\nBuilt and optimized Node.js + DynamoDB APIs, designing efficient queries to minimize latency on high-frequency endpoints.\nIntegrated Gemini AI for automated document data extraction, accelerating batch processing speed by 50% across 500+ records.\nAutomated deployment via CI/CD pipelines (GitHub Actions), reducing deployment cycle time by 40% and eliminating manual deploy steps.",
     },
     {
       company: "CalAI",
