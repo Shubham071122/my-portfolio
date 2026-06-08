@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Technology</title>
+  <desc id="desc">Generic technology icon</desc>
+  <rect width="96" height="96" rx="22" fill="#18181b"/>
+  <path d="M30 34h36v28H30z" fill="#fafafa"/>
+  <path d="M38 43h20M38 53h12" fill="none" stroke="#18181b" stroke-width="4" stroke-linecap="round"/>
+  <path d="M48 22v12m0 28v12M22 48h8m36 0h8M27.5 27.5l6.5 6.5m28 28 6.5 6.5m0-41L62 34m-28 28-6.5 6.5" fill="none" stroke="#60a5fa" stroke-width="4" stroke-linecap="round"/>
+</svg>

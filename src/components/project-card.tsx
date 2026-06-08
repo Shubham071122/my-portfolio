@@ -13,7 +13,8 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import { TechIcon } from "./tech-icon";
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Globe } from "lucide-react";
+import { ArrowRight, ExternalLink, Github, Globe } from "lucide-react";
+import { getProjectSlug } from "@/lib/project-utils";
 
 interface Props {
   title: string;
@@ -34,11 +35,9 @@ interface Props {
 
 export function ProjectCard({
   title,
-  href,
   description,
   dates,
   tags,
-  link,
   image,
   video,
   links,
@@ -54,6 +53,7 @@ export function ProjectCard({
     }
     return defaultIcon || <ExternalLink className="size-3" />;
   };
+  const detailsHref = `/projects/${getProjectSlug(title)}`;
 
   return (
     <motion.div
@@ -70,7 +70,7 @@ export function ProjectCard({
         )}
       >
         <Link
-          href={href || "#"}
+          href={detailsHref}
           className="relative block aspect-video overflow-hidden border-b border-zinc-200 dark:border-zinc-800"
         >
           {video ? (
@@ -101,7 +101,9 @@ export function ProjectCard({
           <CardHeader className="p-0 mb-4">
             <div className="space-y-1">
               <CardTitle className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                {title}
+                <Link href={detailsHref} className="transition-colors hover:text-blue-500">
+                  {title}
+                </Link>
               </CardTitle>
               <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
                 {dates}
@@ -132,21 +134,26 @@ export function ProjectCard({
 
           {/* Action Links - Proper Light/Dark Contrast */}
           <CardFooter className="mt-auto p-0 pt-6">
-            {links && links.length > 0 && (
-              <div className="flex flex-wrap gap-2.5">
-                {links.map((link, idx) => (
-                  <Link
-                    href={link.href}
-                    key={idx}
-                    target="_blank"
-                    className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 transition-all hover:bg-zinc-900 hover:text-white dark:hover:bg-zinc-50 dark:hover:text-zinc-950"
-                  >
-                    {getLinkIcon(link.type, link.icon)}
-                    <span className="capitalize">{link.type}</span>
-                  </Link>
-                ))}
-              </div>
-            )}
+            <div className="flex flex-wrap gap-2.5">
+              <Link
+                href={detailsHref}
+                className="inline-flex items-center gap-2 rounded-lg bg-zinc-900 px-3 py-1.5 text-[11px] font-semibold text-white transition-all hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-300"
+              >
+                <span>Details</span>
+                <ArrowRight className="size-3" />
+              </Link>
+              {links?.map((link, idx) => (
+                <Link
+                  href={link.href}
+                  key={idx}
+                  target="_blank"
+                  className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 transition-all hover:bg-zinc-900 hover:text-white dark:hover:bg-zinc-50 dark:hover:text-zinc-950"
+                >
+                  {getLinkIcon(link.type, link.icon)}
+                  <span className="capitalize">{link.type}</span>
+                </Link>
+              ))}
+            </div>
           </CardFooter>
         </div>
       </Card>

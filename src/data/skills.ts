@@ -308,9 +308,15 @@ export const SKILLS_DATA: Record<string, SkillData> = {
     url: "https://www.mongodb.com/products/platform/atlas-vector-search",
     category: "database",
   },
+  pgvector: {
+    name: "pgvector",
+    icon: "/tech/pgvector.svg",
+    url: "https://github.com/pgvector/pgvector",
+    category: "database",
+  },
   rag: {
     name: "RAG (GenAI)",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg",
+    icon: "/tech/rag.svg",
     url: "https://www.mongodb.com/resources/basics/artificial-intelligence/retrieval-augmented-generation",
     category: "ai",
   },

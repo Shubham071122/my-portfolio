@@ -171,12 +171,89 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Apnavakil",
+      href: "#",
+      dates: "Apr 2026 - Present",
+      active: true,
+      description:
+        "Built an AI-powered legal assistant that helps users understand their rights and legal options through natural language conversations. Implemented a RAG pipeline using PostgreSQL (pgvector) to retrieve relevant constitutional and legal references, enabling context-aware and evidence-based responses. Designed a scalable backend with AI orchestration, document ingestion, semantic search, Redis/BullMQ background processing, and cloud-native deployment architecture.",
+      details: `ApnaVakil is an AI-powered legal assistance platform designed to help citizens understand their rights, legal options, and next steps through natural language conversations.
+
+The platform enables users to describe real-world situations in simple language, such as traffic disputes, police interactions, cyber fraud, consumer complaints, workplace issues, and other legal concerns. The AI assistant analyzes user queries, retrieves relevant legal and constitutional information through a Retrieval-Augmented Generation (RAG) pipeline, and provides context-aware guidance in an easy-to-understand format.
+
+The backend is built using Node.js, TypeScript, PostgreSQL (Supabase), pgvector, Redis, and BullMQ. Legal documents such as constitutional provisions and legal references are processed through a document ingestion pipeline where PDFs are parsed, chunked, embedded, and indexed for semantic search. The system leverages vector similarity search to retrieve relevant legal context and combines it with Google's Gemini models to generate grounded, structured, and user-friendly responses.
+
+For voice interactions, the platform integrates OpenAI Whisper Large V3 Turbo through the Hugging Face Inference API for Speech-to-Text (STT) and ElevenLabs for natural Text-to-Speech (TTS), enabling future voice-based legal assistance workflows.
+
+## Key Features
+
+- AI-powered legal guidance and citizen rights assistance
+- Constitutional and legal document retrieval using RAG
+- Semantic search with pgvector embeddings
+- Conversational AI orchestration layer
+- Background document processing and embedding generation using BullMQ and Redis
+- Voice-enabled architecture using Whisper Large V3 Turbo and ElevenLabs
+- Conversation history and context management
+- Scalable backend architecture with PostgreSQL and Supabase
+- Cloud-native deployment using Docker and Google Cloud Run
+
+## Tech Stack
+
+Node.js, TypeScript, Fastify, PostgreSQL, Supabase, Prisma, pgvector, Redis, BullMQ, Docker, Google Cloud Run, Gemini, Whisper Large V3 Turbo, ElevenLabs, AI/LLM Integration, Retrieval-Augmented Generation (RAG)`,
+      technologies: [
+        "Next.js",
+        "TypeScript",
+        "Node.js",
+        "Supabase",
+        "Redis",
+        "pgvector",
+        "Google Gemini",
+        "Docker",
+        "RAG"
+      ],
+      links: [
+        // {
+        //   type: "Website",
+        //   href: "https://ai-agent-fe-peach.vercel.app",
+        //   icon: <Icons.globe className="size-3" />,
+        // },
+        {
+          type: "FE",
+          href: "https://github.com/Shubham071122/apnavakil-fe",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "BE",
+          href: "https://github.com/Shubham071122/apnavakil-be",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/apnavakil.png",
+      video: "",
+    },
+    {
       title: "AI Agent",
       href: "https://ai-agent-fe-peach.vercel.app",
       dates: "Jan 2026 - Feb 2026",
       active: true,
       description:
         "Built an intelligent document assistant that allows users to chat with a curated library of PDF books to get instant, evidence-based answers. Implemented a Retrieval-Augmented Generation (RAG) system to ensure AI responses are grounded in real data. Features include a secure Admin dashboard for managing documents, role-based authentication (RBAC), and a modern UI with fluid animations.",
+      details: `AI Agent is an intelligent document assistant built for querying a curated library of PDF books through natural language chat. Instead of giving generic answers, the system retrieves relevant document chunks and uses them as context so responses stay grounded in the uploaded material.
+
+The project includes a secure admin workflow for managing documents, role-based access control, and a modern user interface for smooth document conversations. The backend coordinates ingestion, embeddings, vector retrieval, and Gemini-powered response generation.
+
+## Key Features
+
+- Chat with PDF documents using Retrieval-Augmented Generation
+- Admin dashboard for document management
+- Role-based authentication and access control
+- Vector search over embedded document chunks
+- Gemini integration for grounded AI responses
+- Clean conversational UI with fluid interactions
+
+## Tech Stack
+
+Next.js, TypeScript, Node.js, Python FastAPI, Google Gemini, Mongo Vector DB, RAG`,
       technologies: [
         "Next.js",
         "TypeScript",
@@ -213,6 +290,22 @@ export const DATA = {
       active: true,
       description:
         "Developed Can'e Chat, a real-time chat app where users can add friends and message instantly using WebSockets. Added features like typing indicators and read receipts for better engagement, built with React, Node.js, MongoDB, and Redis.",
+      details: `Can'e Chat is a real-time messaging application focused on fast, familiar chat interactions. Users can connect with friends, exchange messages instantly, and see live interaction states such as typing indicators and read receipts.
+
+The app uses WebSockets for low-latency communication, Redis for real-time coordination, and MongoDB for persistent user and message data. The frontend keeps the experience responsive and simple, with a chat layout built for daily use.
+
+## Key Features
+
+- Real-time one-to-one messaging
+- Friend management workflow
+- Typing indicators and read receipts
+- WebSocket-based message delivery
+- Redis-backed real-time coordination
+- Persistent chat and user data with MongoDB
+
+## Tech Stack
+
+React, JavaScript, Node.js, MongoDB, Redis, TailwindCSS`,
       technologies: [
         "React.js",
         "JavaScript",
@@ -249,6 +342,22 @@ export const DATA = {
       active: true,
       description:
         "Built Streamify, a video streaming platform where users can publish, watch, like, and manage playlists. Improved performance and security with optimized queries and verification, using React, Tailwind, Node.js, Express, and MongoDB.",
+      details: `Streamiify is a video streaming platform where users can publish videos, browse content, like videos, and organize playlists. The project focuses on the core experience of a creator-driven media platform: upload, discovery, playback, and library management.
+
+The backend handles video metadata, user actions, playlist relationships, and API flows with Express and MongoDB. The frontend presents a clean streaming interface with responsive layouts and simple content navigation.
+
+## Key Features
+
+- Video publishing and playback
+- Like and playlist management
+- Creator-style content organization
+- Optimized backend queries for media data
+- REST APIs with Node.js and Express
+- Responsive frontend built with React and TailwindCSS
+
+## Tech Stack
+
+React, JavaScript, Node.js, Express.js, MongoDB, TailwindCSS`,
       technologies: [
         "React.js",
         "JavaScript",
@@ -284,6 +393,22 @@ export const DATA = {
       active: true,
       description:
         "Developed View Vista, a movie and series recommendation platform that shows top-rated content, allows users to search, view details, and watch trailers. Built with React and powered by the TMDB API for real-time movie data.",
+      details: `View Vista is a movie and series discovery app built around fast browsing, search, and trailer previews. It helps users explore trending and top-rated content, inspect details, and find what to watch next.
+
+The app is powered by the TMDB API for real-time movie and series data. Redux is used to manage application state, while the React frontend keeps the experience lightweight and easy to scan.
+
+## Key Features
+
+- Browse top-rated movies and series
+- Search for movies and shows
+- View detailed content information
+- Watch trailers from the detail view
+- Real-time data from the TMDB API
+- Responsive UI with React and TailwindCSS
+
+## Tech Stack
+
+React, JavaScript, Redux, TailwindCSS, TMDB API`,
       technologies: [
         "React.js",
         "Node.js",

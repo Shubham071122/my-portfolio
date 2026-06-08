@@ -35,6 +35,7 @@ export const TechIcon = ({
         if (n === "express.js") return "express";
         if (n.includes("fastapi")) return "fastapi";
         if (n.includes("vector db") || n.includes("vector search")) return "mongodbvector";
+        if (n.includes("pgvector") || n.includes("pg vector")) return "pgvector";
         if (n === "rag") return "rag";
         return n.replace(/[\s\.]/g, "");
     };
@@ -64,8 +65,10 @@ export const TechIcon = ({
                     fill
                     className="object-contain transition-all duration-200"
                     onError={(e) => {
-                        // Fallback if icon fails
-                        (e.target as any).src = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg";
+                        const img = e.currentTarget;
+                        if (!img.src.endsWith("/tech/default.svg")) {
+                            img.src = "/tech/default.svg";
+                        }
                     }}
                     unoptimized
                 />

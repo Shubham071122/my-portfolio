@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">RAG</title>
+  <desc id="desc">Retrieval augmented generation icon</desc>
+  <rect width="96" height="96" rx="22" fill="#0f172a"/>
+  <path d="M23 24.5A7.5 7.5 0 0 1 30.5 17h22L73 37.5V71a7.5 7.5 0 0 1-7.5 7.5h-35A7.5 7.5 0 0 1 23 71V24.5Z" fill="#f8fafc"/>
+  <path d="M53 18v14a6 6 0 0 0 6 6h14" fill="#bfdbfe"/>
+  <path d="M34 46h22M34 56h28M34 66h17" fill="none" stroke="#334155" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="27" cy="28" r="7" fill="#22c55e"/>
+  <circle cx="72" cy="59" r="7" fill="#38bdf8"/>
+  <circle cx="47" cy="79" r="7" fill="#a78bfa"/>
+  <path d="m32.4 32.5 9.1 8.3m25.3 22.9-13.3 10.6m-7.1-30.8 19.4 12.2" fill="none" stroke="#94a3b8" stroke-width="3.5" stroke-linecap="round"/>
+</svg>
