@@ -344,4 +344,22 @@ export const SKILLS_DATA: Record<string, SkillData> = {
     url: "https://www.zoho.com",
     category: "tool",
   },
+  huggingface: {
+    name: "HuggingFace",
+    icon: "https://cdn.simpleicons.org/huggingface",
+    url: "https://huggingface.co",
+    category: "ai",
+  },
+  ollama: {
+    name: "Ollama",
+    icon: "https://cdn.simpleicons.org/ollama",
+    url: "https://ollama.com",
+    category: "ai",
+  },
+  github: {
+    name: "GitHub",
+    icon: "https://cdn.simpleicons.org/github",
+    url: "https://github.com",
+    category: "tool",
+  },
 };

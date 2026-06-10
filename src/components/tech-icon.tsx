@@ -37,6 +37,9 @@ export const TechIcon = ({
         if (n.includes("vector db") || n.includes("vector search")) return "mongodbvector";
         if (n.includes("pgvector") || n.includes("pg vector")) return "pgvector";
         if (n === "rag") return "rag";
+        if (n === "github" || n === "github actions") return "github";
+        if (n === "golang") return "go";
+        if (n === "ollama") return "ollama";
         return n.replace(/[\s\.]/g, "");
     };
 
