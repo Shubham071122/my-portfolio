@@ -40,6 +40,7 @@ export const TechIcon = ({
         if (n === "github" || n === "github actions") return "github";
         if (n === "golang") return "go";
         if (n === "ollama") return "ollama";
+        if (n === "websocket" || n === "socket") return "websocket";
         return n.replace(/[\s\.]/g, "");
     };
 

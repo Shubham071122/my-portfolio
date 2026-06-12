@@ -174,6 +174,67 @@ export const DATA = {
     },
   ],
   projects: [
+
+    {
+      title: "Collab",
+      href: "https://collab.plynk.in",
+      dates: "May 2026 - Jun 2026",
+      active: true,
+      description:
+        "Built a real-time collaborative whiteboard platform where multiple users can draw, annotate, and design together on a shared canvas. Features include WebSocket-based live sync, role-based access (owner/editor/viewer), project sharing via email, and persistent canvas storage in PostgreSQL. Deployed the Go backend on Docker and the Next.js frontend on Vercel.",
+      details: `Collab is a real-time collaborative whiteboard application where users can create projects, invite teammates, and work together on a shared canvas simultaneously — similar to Figma or Miro.
+
+Each user joins a project room over WebSocket. When anyone draws or makes a change on the canvas, the update is broadcast to all other connected users in real time. The canvas state is automatically saved to PostgreSQL so no work is lost even if someone closes the tab.
+
+The backend is built with Go (Gin) and manages user authentication with JWT, project CRUD, WebSocket hub for live collaboration, and role-based permissions. The frontend is a Next.js app using tldraw as the canvas engine, Zustand for state management, and server actions for all API calls.
+
+## Key Features
+
+- Real-time multi-user canvas sync over WebSocket
+- Role-based access control: owner, editor, viewer
+- Project sharing by email with permission levels
+- Automatic canvas persistence to PostgreSQL
+- Live presence indicators and connection status
+- Email verification via OTP using Resend
+- JWT-based authentication with httpOnly cookies
+- Fully responsive dashboard with project management
+- Docker-based backend deployment
+
+## Tech Stack
+
+Next.js, TypeScript, Go, Gin, PostgreSQL, Supabase, WebSocket, tldraw, Zustand, Docker, Vercel, JWT, Resend`,
+      technologies: [
+        "Next.js",
+        "TypeScript",
+        "Go",
+        "Gin",
+        "PostgreSQL",
+        "WebSocket",
+        "tldraw",
+        "Zustand",
+        "Docker",
+        "Supabase",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://collab.plynk.in",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "FE",
+          href: "https://github.com/Shubham071122/collab-fe",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "BE",
+          href: "https://github.com/Shubham071122/collab",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/collab.png",
+      video: "",
+    },
     {
       title: "Apnavakil",
       href: "#",

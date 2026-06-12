@@ -362,4 +362,22 @@ export const SKILLS_DATA: Record<string, SkillData> = {
     url: "https://github.com",
     category: "tool",
   },
+  websocket: {
+    name: "WebSocket",
+    icon: "https://cdn.simpleicons.org/socketdotio",
+    url: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+    category: "tool",
+  },
+  gin: {
+    name: "Gin",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/v2.17.0/icons/gin/gin-original.svg",
+    url: "https://gin-gonic.com",
+    category: "backend",
+  },
+  tldraw: {
+    name: "tldraw",
+    icon: "https://cdn.simpleicons.org/tldraw",
+    url: "https://tldraw.dev",
+    category: "frontend",
+  },
 };
