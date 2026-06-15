@@ -181,28 +181,31 @@ export const DATA = {
       dates: "May 2026 - Jun 2026",
       active: true,
       description:
-        "Built a real-time collaborative whiteboard platform where multiple users can draw, annotate, and design together on a shared canvas. Features include WebSocket-based live sync, role-based access (owner/editor/viewer), project sharing via email, and persistent canvas storage in PostgreSQL. Deployed the Go backend on Docker and the Next.js frontend on Vercel.",
-      details: `Collab is a real-time collaborative whiteboard application where users can create projects, invite teammates, and work together on a shared canvas simultaneously — similar to Figma or Miro.
+        "Built a real-time collaborative whiteboard platform with a secure, multi-tenant billing & subscription system. Features include WebSocket-based live sync, role-based access (owner/editor/viewer), project sharing, and a robust Razorpay integration with transaction-first verification to prevent payment bypasses.",
+      details: `Collab is an enterprise-ready collaborative whiteboard application where teams can brainstorm and work together on a shared canvas simultaneously — similar to Figma or Miro.
 
-Each user joins a project room over WebSocket. When anyone draws or makes a change on the canvas, the update is broadcast to all other connected users in real time. The canvas state is automatically saved to PostgreSQL so no work is lost even if someone closes the tab.
+### The Engineering Story
+Collab began as a real-time canvas powered by WebSockets and tldraw, but as user demands grew, it evolved into a fully monetized, secure SaaS platform. A major phase of development focused on designing a secure, production-grade **Razorpay Subscription & Recurring Billing System** to handle multi-tier plans (Silver and Gold).
 
-The backend is built with Go (Gin) and manages user authentication with JWT, project CRUD, WebSocket hub for live collaboration, and role-based permissions. The frontend is a Next.js app using tldraw as the canvas engine, Zustand for state management, and server actions for all API calls.
+During implementation, we tackled and resolved a critical **payment bypass loophole**. Previously, starting a checkout flow would pre-upgrade the user's tier while keeping the payment status 'incomplete'. If a user closed the payment modal without paying, they still obtained access to premium features. To solve this, we re-architected the state machine to be **transaction-first**:
+1. Checkouts now log a pending order in a dedicated transactional ledger without altering the user's active tier.
+2. The subscription tier is upgraded and activated ONLY after cryptographic signature verification (via Razorpay webhook callbacks or client-side validation APIs).
+3. The active subscription status is verified server-side on every project operation and user invite to enforce strict plan limits.
+
+To complete the SaaS experience, we developed a premium **Billing Dashboard** displaying current plan status, billing cycles, upcoming renewal dates, and a dynamic historical invoice ledger.
 
 ## Key Features
 
-- Real-time multi-user canvas sync over WebSocket
-- Role-based access control: owner, editor, viewer
-- Project sharing by email with permission levels
-- Automatic canvas persistence to PostgreSQL
-- Live presence indicators and connection status
-- Email verification via OTP using Resend
-- JWT-based authentication with httpOnly cookies
-- Fully responsive dashboard with project management
-- Docker-based backend deployment
+- **Real-Time Collaboration**: Dynamic multi-user canvas sync via optimized Go WebSockets with presence indicators.
+- **Subscription Billing**: Recurring Razorpay subscription payments, webhooks for auto-renewals, plan pauses, and cancellations.
+- **Transaction-First Security**: Solved gateway-cancellation loopholes using transactional record validation before upgrading subscription state.
+- **Billing Ledger**: Detailed client dashboard for invoices, payment statuses (Created, Captured, Failed), and subscription cycles.
+- **Role-Based Access Control**: Strict project sharing via email invites with owner, editor, and viewer roles.
+- **Persistence & OTP**: Automated canvas state recovery with PostgreSQL and OTP verification for secure login.
 
 ## Tech Stack
 
-Next.js, TypeScript, Go, Gin, PostgreSQL, Supabase, WebSocket, tldraw, Zustand, Docker, Vercel, JWT, Resend`,
+Next.js, TypeScript, Go, Gin, PostgreSQL, Razorpay, Webhooks, WebSocket, tldraw, Zustand, Supabase, Docker, Vercel`,
       technologies: [
         "Next.js",
         "TypeScript",
@@ -214,6 +217,8 @@ Next.js, TypeScript, Go, Gin, PostgreSQL, Supabase, WebSocket, tldraw, Zustand, 
         "Zustand",
         "Docker",
         "Supabase",
+        "Razorpay",
+        "Webhooks",
       ],
       links: [
         {
