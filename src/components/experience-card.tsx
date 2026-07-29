@@ -18,6 +18,7 @@ interface ExperienceCardProps {
     technologies?: string[];
     href?: string;
     linkedinHref?: string;
+    status?: string;
 }
 
 export const ExperienceCard = ({
@@ -31,9 +32,56 @@ export const ExperienceCard = ({
     technologies,
     href,
     linkedinHref,
+    status,
 }: ExperienceCardProps) => {
     const [isExpanded, setIsExpanded] = useState(true);
     const isWorking = period.toLowerCase().includes("present");
+
+    const getStatusConfig = (statusStr: string) => {
+        const normalized = statusStr.toLowerCase();
+        switch (normalized) {
+            case "working":
+                return {
+                    text: "Working",
+                    badgeClass: "bg-emerald-500/10 border-emerald-500/20 text-emerald-500",
+                    dotClass: "bg-emerald-500 animate-pulse",
+                };
+            case "building":
+                return {
+                    text: "Building",
+                    badgeClass: "bg-emerald-500/10 border-emerald-500/20 text-emerald-500",
+                    dotClass: "bg-emerald-500 animate-pulse",
+                };
+            case "paused":
+                return {
+                    text: "Paused",
+                    badgeClass: "bg-amber-500/10 border-amber-500/20 text-amber-500",
+                    dotClass: "bg-amber-500",
+                };
+            case "stopped":
+                return {
+                    text: "Stopped",
+                    badgeClass: "bg-rose-500/10 border-rose-500/20 text-rose-500",
+                    dotClass: "bg-rose-500",
+                };
+            case "completed":
+            case "done":
+                return {
+                    text: "Completed",
+                    badgeClass: "bg-blue-500/10 border-blue-500/20 text-blue-500",
+                    dotClass: "bg-blue-500",
+                };
+            default:
+                return {
+                    text: statusStr,
+                    badgeClass: "bg-muted border-border text-muted-foreground",
+                    dotClass: "bg-muted-foreground",
+                };
+        }
+    };
+
+    const resolvedStatus = status || (isWorking ? (company.toLowerCase() === "plynk" ? "building" : "working") : undefined);
+    const statusConfig = resolvedStatus ? getStatusConfig(resolvedStatus) : null;
 
     const bulletPoints = description
         ? description.split("\n").filter((p) => p.trim().length > 0)
@@ -77,10 +125,10 @@ export const ExperienceCard = ({
                                         </a>
                                     )}
                                 </div>
-                                {isWorking && (
-                                    <div className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20">
-                                        <div className="size-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                                        <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">{company.toLocaleLowerCase() === "plynk" ? "Building" : "Working"}</span>
+                                {statusConfig && (
+                                    <div className={cn("flex items-center gap-1.5 rounded-full px-2 py-0.5 border text-[10px] font-bold uppercase tracking-widest", statusConfig.badgeClass)}>
+                                        <div className={cn("size-1.5 rounded-full", statusConfig.dotClass)} />
+                                        <span>{statusConfig.text}</span>
                                     </div>
                                 )}
                                 <button
@@ -97,8 +145,8 @@ export const ExperienceCard = ({
                         </div>
 
                         <div className="flex flex-row sm:flex-col justify-between items-center sm:items-end sm:text-right gap-1 pt-1 sm:pt-0">
-                            <p className="text-[10px] sm:text-xs font-semibold tabular-nums text-muted-foreground/80">{company.toLocaleLowerCase() === "plynk" ? "" : period}</p>
-                            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-medium">{company.toLocaleLowerCase() === "plynk" ? "" : locationType}</p>
+                            <p className="text-[10px] sm:text-xs font-semibold tabular-nums text-muted-foreground/80">{company.toLocaleLowerCase() === "plynk" && resolvedStatus === "building" ? "" : period}</p>
+                            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-medium">{company.toLocaleLowerCase() === "plynk" && resolvedStatus === "building" ? "" : locationType}</p>
                         </div>
                     </div>
 

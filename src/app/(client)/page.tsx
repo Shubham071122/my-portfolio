@@ -122,6 +122,7 @@ export default function Page() {
                   locationType={work.location === "Remote" ? "Work from Home" : "On Site"}
                   technologies={(work as any).technologies || []}
                   linkedinHref={(work as any).linkedinHref}
+                  status={(work as any).status}
                 />
               </BlurFade>
             ))}

@@ -94,6 +94,19 @@ export const DATA = {
 
   work: [
     {
+      company: "Acowale",
+      href: "https://acowale.com",
+      badges: [],
+      location: "Bengaluru, India (Remote)",
+      title: "Software Development Engineer I (SDE-1)",
+      logoUrl: "/acowale.png",
+      start: "Jun 2026",
+      end: "Present",
+      linkedinHref: "https://www.linkedin.com/company/acowale/",
+      technologies: ["Fastify", "Node.js", "Bun", "TypeScript", "PostgreSQL", "Prisma", "Zod", "Express", "React", "Docker", "AWS"],
+      description: "",
+    },
+    {
       company: "Plynk",
       href: "https://plynk.in",
       badges: ["Active Development", "Beta"],
@@ -101,7 +114,8 @@ export const DATA = {
       title: "Co-Founder & Lead Developer",
       logoUrl: "/plynk.png",
       start: "Feb 2026",
-      end: "Present",
+      end: "May 2026",
+      status: "paused",
       description:
         "Building a platform for developers and digital creators. Currently developing a custom username system and focusing on a high-end UI with glassmorphism design. Handling the full-stack architecture using Next.js, Node.js, and PostgreSQL.",
       technologies: ["Next.js", "TypeScript", "Node.js", "Express", "PostgreSQL", "Prisma", "TailwindCSS"],
