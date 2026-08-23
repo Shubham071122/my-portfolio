@@ -155,6 +155,8 @@ export default function Navbar() {
             </Link>
           </DockIcon>
         ))}
+        {/* Hide theme toggle on client portfolio navbar */}
+        {/* 
         <Separator orientation="vertical" className="h-full py-2" />
         <DockIcon>
           <Tooltip delayDuration={0}>
@@ -169,6 +171,7 @@ export default function Navbar() {
             </TooltipContent>
           </Tooltip>
         </DockIcon>
+        */}
       </Dock>
     </div>
   );

@@ -34,7 +34,7 @@ export const ExperienceCard = ({
     linkedinHref,
     status,
 }: ExperienceCardProps) => {
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
     const isWorking = period.toLowerCase().includes("present");
 
     const getStatusConfig = (statusStr: string) => {
@@ -88,8 +88,26 @@ export const ExperienceCard = ({
         : [];
 
     return (
-        <div className="group relative transition-all duration-300">
-            <div className="flex items-start gap-2 sm:gap-4">
+        <div className="group relative transition-all duration-300 border border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-950/50 p-5 rounded-2xl blueprint-grid shadow-sm hover:shadow-md dark:hover:shadow-black/20 overflow-hidden">
+            {/* Subtle crosshairs in the corners (architectural/blueprint style) */}
+            <div className="absolute top-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+                <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+                <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+            </div>
+            <div className="absolute top-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+                <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+                <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+            </div>
+            <div className="absolute bottom-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+                <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+                <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+            </div>
+            <div className="absolute bottom-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+                <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+                <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+            </div>
+
+            <div className="flex items-start gap-2 sm:gap-4 relative z-20">
                 {/* Logo */}
                 <div className="relative flex-shrink-0 mt-1">
                     <div className="relative size-10 sm:size-12 overflow-hidden rounded-full border-2 border-muted bg-white">

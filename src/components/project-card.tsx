@@ -65,10 +65,28 @@ export function ProjectCard({
     >
       <Card
         className={cn(
-          "group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 transition-all duration-300 hover:shadow-lg dark:hover:shadow-black/40",
+          "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 blueprint-grid transition-all duration-300 hover:shadow-lg dark:hover:shadow-black/40",
           className
         )}
       >
+        {/* Subtle crosshairs in the corners (architectural/blueprint style) */}
+        <div className="absolute top-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+        </div>
+        <div className="absolute top-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+        </div>
+        <div className="absolute bottom-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+        </div>
+        <div className="absolute bottom-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
+          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
+          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
+        </div>
+
         <Link
           href={detailsHref}
           className="relative block aspect-video overflow-hidden border-b border-zinc-200 dark:border-zinc-800"

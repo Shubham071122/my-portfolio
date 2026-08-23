@@ -16,7 +16,7 @@ export const DATA = {
   description:
     "Full Stack Developer | Building Scalable Web Applications | DevOps & Cloud",
   summary:
-    "I’m a Full Stack Developer who loves building fast, user-friendly web applications and scalable backend systems. I enjoy turning ideas into real products using React, Next.js, Node.js, and AWS. I’m passionate about clean code, problem-solving, and constantly learning new technologies to improve how things work.",
+    "I’m a developer who loves building clean, fast web apps that just work. Most of my time is spent writing Next.js, Node.js, and Go, or configuring deployments on AWS. I focus on keeping things simple, writing tidy code, and learning new tools as I build.",
   avatarUrl: "/me.jpeg",
   skills: [
     "C++",

@@ -173,7 +173,7 @@ async function RecommendedArticles({
     if (historyCookie) {
       history = JSON.parse(decodeURIComponent(historyCookie));
     }
-  } catch (e) {}
+  } catch (e) { }
 
   const allBlogs = await getPublishedBlogs();
   if (!allBlogs || allBlogs.length <= 1) return null;

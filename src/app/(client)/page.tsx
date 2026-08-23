@@ -13,6 +13,7 @@ import { ContactCTA } from "@/components/contact-cta";
 
 import SocialLinks from "@/components/social-links";
 import { ArrowRight } from "lucide-react";
+import GitHubCalendarPanel from "@/components/github-calendar";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -56,23 +57,37 @@ export default function Page() {
         <div className="absolute -top-24 -left-12 size-96 bg-blue-500/10 blur-[120px] rounded-full pointer-events-none z-[-1] dark:bg-blue-500/5" />
 
         <div className="mx-auto w-full max-w-2xl space-y-8">
-          <div className="flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between gap-6 sm:gap-2">
-            <div className="flex-col flex flex-1 space-y-3 text-center sm:text-left">
+          <div className="flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between gap-6 sm:gap-4">
+            <div className="flex-col flex flex-1 space-y-4 text-center sm:text-left">
               <BlurFade delay={BLUR_FADE_DELAY}>
-                <h1 className="text-4xl font-bold tracking-tight sm:text-6xl xl:text-7xl/none bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/70">
+                <h1 className="text-4xl font-bold tracking-tight sm:text-6xl bg-clip-text text-transparent bg-gradient-to-b from-foreground via-foreground/90 to-foreground/75">
                   Hi, I&apos;m{" "}
                   <span className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent dark:from-blue-400 dark:to-blue-200">
                     {DATA.name.split(" ")[0]}
-                  </span>{" "}
-                  👋
+                  </span>
                 </h1>
               </BlurFade>
 
               <BlurFadeText
-                className="max-w-[500px] text-muted-foreground text-base sm:text-xl font-medium leading-relaxed"
+                className="max-w-[500px] text-zinc-900 dark:text-zinc-100 text-base sm:text-lg font-bold tracking-tight leading-relaxed"
                 delay={BLUR_FADE_DELAY * 2}
                 text={DATA.description}
               />
+
+              <BlurFade delay={BLUR_FADE_DELAY * 3}>
+                <Markdown className="prose max-w-full text-pretty font-sans text-sm sm:text-base text-muted-foreground leading-relaxed dark:prose-invert">
+                  {DATA.summary}
+                </Markdown>
+                <Link href="/about" className="text-blue-500 hover:underline text-sm font-semibold mt-3 inline-block">
+                  Read more about my journey →
+                </Link>
+              </BlurFade>
+
+              <BlurFade delay={BLUR_FADE_DELAY * 4}>
+                <div className="pt-2">
+                  <SocialLinks />
+                </div>
+              </BlurFade>
             </div>
 
             <BlurFade delay={BLUR_FADE_DELAY * 3}>
@@ -84,22 +99,6 @@ export default function Page() {
             </BlurFade>
           </div>
         </div>
-      </section>
-      <section id="about">
-        <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-xl font-bold">About</h2>
-        </BlurFade>
-        <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <Markdown className="prose max-w-full text-pretty font-sans text-sm sm:text-base text-muted-foreground dark:prose-invert">
-            {DATA.summary}
-          </Markdown>
-          <Link href="/about" className="text-blue-500 hover:underline text-sm font-medium mt-2 inline-block">
-            Read more about my journey →
-          </Link>
-          <div className="mt-4">
-            <SocialLinks />
-          </div>
-        </BlurFade>
       </section>
       <section id="work">
         <div className="flex min-h-0 flex-col gap-y-3">
@@ -162,6 +161,13 @@ export default function Page() {
               </BlurFade>
             ))}
           </div>
+        </div>
+      </section>
+      <section id="github-activity">
+        <div className="flex min-h-0 flex-col gap-y-3">
+          <BlurFade delay={BLUR_FADE_DELAY * 10.5}>
+            <GitHubCalendarPanel username={DATA.contact.social.GitHub.url.split("/").pop() || "Shubham071122"} />
+          </BlurFade>
         </div>
       </section>
       <section id="projects">
