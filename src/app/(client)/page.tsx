@@ -166,7 +166,12 @@ export default function Page() {
       <section id="github-activity">
         <div className="flex min-h-0 flex-col gap-y-3">
           <BlurFade delay={BLUR_FADE_DELAY * 10.5}>
-            <GitHubCalendarPanel username={DATA.contact.social.GitHub.url.split("/").pop() || "Shubham071122"} />
+            <GitHubCalendarPanel
+              accounts={[
+                { label: "Personal", username: DATA.contact.social.GitHub.url.split("/").pop() || "Shubham071122" },
+                { label: "Work", username: "shubham-kumar-acowale" },
+              ]}
+            />
           </BlurFade>
         </div>
       </section>

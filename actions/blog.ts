@@ -49,23 +49,38 @@ export async function deleteBlog(id: string): Promise<void> {
 
 // Public Blog Actions
 export async function getPublishedBlogs(): Promise<Blog[]> {
-  const fetcher = unstable_cache(
-    async () => api.get<Blog[]>("/blogs"),
-    ["public-blogs-list"],
-    { tags: ["blogs"] }
-  );
-  return fetcher();
+  try {
+    const fetcher = unstable_cache(
+      async () => api.get<Blog[]>("/blogs"),
+      ["public-blogs-list"],
+      { tags: ["blogs"] }
+    );
+    return await fetcher();
+  } catch (error) {
+    console.error("Failed to fetch published blogs:", error);
+    return [];
+  }
 }
 
-export async function getBlogBySlug(slug: string): Promise<Blog> {
-  const fetcher = unstable_cache(
-    async (s: string) => api.get<Blog>(`/blogs/${s}`),
-    ["public-blog-detail"],
-    { tags: [`blog-${slug}`] }
-  );
-  return fetcher(slug);
+export async function getBlogBySlug(slug: string): Promise<Blog | null> {
+  try {
+    const fetcher = unstable_cache(
+      async (s: string) => api.get<Blog>(`/blogs/${s}`),
+      ["public-blog-detail"],
+      { tags: [`blog-${slug}`] }
+    );
+    return await fetcher(slug);
+  } catch (error) {
+    console.error(`Failed to fetch blog by slug (${slug}):`, error);
+    return null;
+  }
 }
 
 export async function searchBlogs(query: string): Promise<Blog[]> {
-  return api.get<Blog[]>(`/blogs/search?q=${encodeURIComponent(query)}`);
+  try {
+    return await api.get<Blog[]>(`/blogs/search?q=${encodeURIComponent(query)}`);
+  } catch (error) {
+    console.error("Failed to search blogs:", error);
+    return [];
+  }
 }

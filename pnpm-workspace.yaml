@@ -1,0 +1,4 @@
+allowBuilds:
+  'unrs-resolver': false
+  '@swc/core': true
+  '@scarf/scarf': false

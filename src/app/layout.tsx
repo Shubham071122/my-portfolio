@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ToasterProvider } from "@/components/toaster-provider";
+import NekoCat from "@/components/neko-cat";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -45,6 +46,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <TooltipProvider delayDuration={0}>
             <ToasterProvider />
+            <NekoCat />
             {children}
           </TooltipProvider>
         </ThemeProvider>

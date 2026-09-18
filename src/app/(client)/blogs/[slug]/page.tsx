@@ -189,6 +189,7 @@ async function RecommendedArticles({
   if (!nextBlog || nextBlog.slug === currentSlug) return null;
 
   const nextBlogFull = await getBlogBySlug(nextBlog.slug);
+  if (!nextBlogFull) return null;
 
   return (
     <BlurFade delay={BLUR_FADE_DELAY}>
