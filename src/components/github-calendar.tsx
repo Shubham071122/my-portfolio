@@ -38,7 +38,9 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [selectedYear, setSelectedYear] = useState<string>("last");
+  const [selectedYear, setSelectedYear] = useState<string>(() =>
+    new Date().getFullYear().toString()
+  );
 
   const [dataset, setDataset] = useState<{
     allContributions: Activity[];
@@ -148,6 +150,9 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
             lastYearTotal,
             peakYear,
           });
+          if (availableYears.length > 0 && !availableYears.includes(selectedYear)) {
+            setSelectedYear(availableYears[0]);
+          }
           setLoading(false);
         }
       } catch {
@@ -168,18 +173,16 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
       return { currentContributions: [], currentTotal: 0 };
     }
 
-    if (selectedYear === "last") {
-      const slice = dataset.allContributions.slice(-365);
-      return {
-        currentContributions: slice,
-        currentTotal: dataset.lastYearTotal,
-      };
-    }
+    const targetYear =
+      selectedYear === "last" || !dataset.availableYears.includes(selectedYear)
+        ? dataset.availableYears[0] || new Date().getFullYear().toString()
+        : selectedYear;
 
     const slice = dataset.allContributions.filter((c) =>
-      c.date.startsWith(`${selectedYear}-`)
+      c.date.startsWith(`${targetYear}-`)
     );
-    const total = dataset.yearTotals[selectedYear] ?? slice.reduce((sum, c) => sum + c.count, 0);
+    const total =
+      dataset.yearTotals[targetYear] ?? slice.reduce((sum, c) => sum + c.count, 0);
 
     return {
       currentContributions: slice,
@@ -197,7 +200,6 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
     dataset.availableYears.length > 0
       ? dataset.availableYears[dataset.availableYears.length - 1]
       : "2022";
-  const latestYear = dataset.availableYears[0] || "2026";
 
   return (
     <div className="w-full overflow-hidden border border-zinc-200/60 dark:border-zinc-800/60 bg-gradient-to-br from-zinc-50/90 via-zinc-100/50 to-zinc-50/90 dark:from-zinc-900/60 dark:via-zinc-950/70 dark:to-zinc-900/60 p-5 sm:p-6 rounded-2xl blueprint-grid shadow-sm hover:shadow-md dark:hover:shadow-black/30 transition-all relative">
@@ -233,17 +235,6 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
 
           {/* Year Filter Segmented Control */}
           <div className="inline-flex items-center p-1 rounded-xl bg-zinc-200/50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-700/50 backdrop-blur-sm self-start sm:self-auto overflow-x-auto max-w-full scrollbar-none shrink-0 gap-0.5">
-            <button
-              type="button"
-              onClick={() => setSelectedYear("last")}
-              className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-all whitespace-nowrap select-none ${
-                selectedYear === "last"
-                  ? "bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 shadow-sm font-semibold"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-foreground hover:bg-white/40 dark:hover:bg-zinc-900/40"
-              }`}
-            >
-              Last Year
-            </button>
             {dataset.availableYears.map((yr) => (
               <button
                 key={yr}
@@ -268,8 +259,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
               {currentTotal.toLocaleString()}
             </span>
             <span className="text-muted-foreground">
-              contributions in{" "}
-              {selectedYear === "last" ? "the last year" : selectedYear}
+              contributions in {selectedYear}
             </span>
           </div>
 
