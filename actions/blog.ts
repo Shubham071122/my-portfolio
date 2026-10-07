@@ -65,11 +65,11 @@ export async function getPublishedBlogs(): Promise<Blog[]> {
 export async function getBlogBySlug(slug: string): Promise<Blog | null> {
   try {
     const fetcher = unstable_cache(
-      async (s: string) => api.get<Blog>(`/blogs/${s}`),
-      ["public-blog-detail"],
+      async () => api.get<Blog>(`/blogs/${slug}`),
+      [`public-blog-detail-${slug}`],
       { tags: [`blog-${slug}`] }
     );
-    return await fetcher(slug);
+    return await fetcher();
   } catch (error) {
     console.error(`Failed to fetch blog by slug (${slug}):`, error);
     return null;

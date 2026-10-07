@@ -2,9 +2,10 @@
 
 import { ActivityCalendar, Activity } from "react-activity-calendar";
 import { useTheme } from "next-themes";
-import { useEffect, useMemo, useState } from "react";
-import { Calendar, Flame } from "lucide-react";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { Calendar, Flame, Loader2, ChevronDown, Check } from "lucide-react";
 import { Icons } from "@/components/icons";
+import { cn } from "@/lib/utils";
 
 export interface GitHubAccount {
   label: string;
@@ -38,6 +39,10 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   const [selectedYear, setSelectedYear] = useState<string>(() =>
     new Date().getFullYear().toString()
   );
@@ -69,6 +74,17 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsYearDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   useEffect(() => {
@@ -137,7 +153,6 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
           }
         });
 
-        // Calculate rolling last 365 days total
         const last365Slice = allContributions.slice(-365);
         const lastYearTotal = last365Slice.reduce((sum, c) => sum + c.count, 0);
 
@@ -165,7 +180,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
     return () => {
       isMounted = false;
     };
-  }, [mounted, targetUsernamesKey, parsedAccounts]);
+  }, [mounted, targetUsernamesKey]);
 
   // Compute displayed calendar slice based on selectedYear
   const { currentContributions, currentTotal } = useMemo(() => {
@@ -190,6 +205,13 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
     };
   }, [selectedYear, dataset]);
 
+  // Auto scroll to latest activity (right side) on load and when year changes
+  useEffect(() => {
+    if (scrollContainerRef.current && currentContributions.length > 0) {
+      scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
+    }
+  }, [selectedYear, currentContributions]);
+
   if (!mounted) {
     return (
       <div className="w-full h-[220px] animate-pulse bg-muted/40 border border-zinc-200/50 dark:border-zinc-800/50 rounded-2xl" />
@@ -202,7 +224,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
       : "2022";
 
   return (
-    <div className="w-full overflow-hidden border border-zinc-200/60 dark:border-zinc-800/60 bg-gradient-to-br from-zinc-50/90 via-zinc-100/50 to-zinc-50/90 dark:from-zinc-900/60 dark:via-zinc-950/70 dark:to-zinc-900/60 p-5 sm:p-6 rounded-2xl blueprint-grid shadow-sm hover:shadow-md dark:hover:shadow-black/30 transition-all relative">
+    <div className="w-full overflow-hidden border border-zinc-200/60 dark:border-zinc-800/60 bg-gradient-to-br from-zinc-50/90 via-zinc-100/50 to-zinc-50/90 dark:from-zinc-900/60 dark:via-zinc-950/70 dark:to-zinc-900/60 p-4 sm:p-6 rounded-2xl blueprint-grid shadow-sm hover:shadow-md dark:hover:shadow-black/30 transition-all relative">
       {/* Subtle blueprint crosshairs */}
       <div className="absolute top-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-20 dark:opacity-40 z-10">
         <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
@@ -221,97 +243,145 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
         <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
       </div>
 
-      <div className="relative z-20 flex flex-col gap-5 w-full">
-        {/* Top Header Row */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200/50 dark:border-zinc-800/50 pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="size-9 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-foreground shadow-sm shrink-0">
+      <div className="relative z-20 flex flex-col gap-3.5 sm:gap-4 w-full">
+        {/* Top Header Row with Title on Left and shadcn-styled Dropdown on Right */}
+        <div className="flex items-center justify-between gap-3 border-b border-zinc-200/50 dark:border-zinc-800/50 pb-3">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="size-8 sm:size-9 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-foreground shadow-sm shrink-0">
               <Icons.github className="size-4" />
             </div>
-            <h3 className="text-base font-bold tracking-tight text-foreground">
+            <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground">
               GitHub Contributions
             </h3>
           </div>
 
-          {/* Year Filter Segmented Control */}
-          <div className="inline-flex items-center p-1 rounded-xl bg-zinc-200/50 dark:bg-zinc-800/50 border border-zinc-200/60 dark:border-zinc-700/50 backdrop-blur-sm self-start sm:self-auto overflow-x-auto max-w-full scrollbar-none shrink-0 gap-0.5">
-            {dataset.availableYears.map((yr) => (
-              <button
-                key={yr}
-                type="button"
-                onClick={() => setSelectedYear(yr)}
-                className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-all whitespace-nowrap select-none ${
-                  selectedYear === yr
-                    ? "bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 shadow-sm font-semibold"
-                    : "text-zinc-600 dark:text-zinc-400 hover:text-foreground hover:bg-white/40 dark:hover:bg-zinc-900/40"
-                }`}
-              >
-                {yr}
-              </button>
-            ))}
-          </div>
-        </div>
+          {/* Custom shadcn-styled Year Dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-100 hover:text-white transition-all shadow-sm focus:outline-none select-none"
+              aria-expanded={isYearDropdownOpen}
+            >
+              <span>{selectedYear}</span>
+              <ChevronDown
+                className={cn(
+                  "size-3.5 text-zinc-400 transition-transform duration-200",
+                  isYearDropdownOpen ? "rotate-180 text-white" : ""
+                )}
+              />
+            </button>
 
-        {/* Stats Summary Banner */}
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 font-medium">
-            <span className="text-sm font-bold text-foreground">
-              {currentTotal.toLocaleString()}
-            </span>
-            <span className="text-muted-foreground">
-              contributions in {selectedYear}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 text-[11px] font-medium text-muted-foreground">
-            {dataset.lifetimeTotal > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-zinc-200/60 dark:bg-zinc-800/60 text-foreground font-semibold">
-                <Flame className="size-3 text-amber-500" />
-                {dataset.lifetimeTotal.toLocaleString()} All-Time
-              </span>
+            {/* Popover Menu */}
+            {isYearDropdownOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-28 py-1 rounded-xl bg-zinc-950 border border-zinc-800 shadow-2xl z-30 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-100">
+                {dataset.availableYears.map((yr) => {
+                  const isSelected = selectedYear === yr;
+                  return (
+                    <button
+                      key={yr}
+                      type="button"
+                      onClick={() => {
+                        setSelectedYear(yr);
+                        setIsYearDropdownOpen(false);
+                      }}
+                      className={cn(
+                        "w-full px-3 py-1.5 text-left text-xs font-medium flex items-center justify-between transition-colors",
+                        isSelected
+                          ? "bg-zinc-900 text-white font-semibold"
+                          : "text-zinc-400 hover:text-white hover:bg-zinc-900/60"
+                      )}
+                    >
+                      <span>{yr}</span>
+                      {isSelected && <Check className="size-3 text-blue-400" />}
+                    </button>
+                  );
+                })}
+              </div>
             )}
-            <span className="inline-flex items-center gap-1">
-              <Calendar className="size-3 text-zinc-400" />
-              Active since {earliestYear}
-            </span>
           </div>
         </div>
 
-        {/* Contribution Calendar Grid */}
-        <div className="w-full overflow-x-auto py-2 flex justify-center scrollbar-thin scrollbar-thumb-zinc-200 dark:scrollbar-thumb-zinc-800">
-          <ActivityCalendar
-            data={currentContributions}
-            loading={loading}
-            colorScheme={resolvedTheme as "light" | "dark"}
-            theme={gitHubTheme}
-            blockSize={11}
-            blockMargin={4}
-            blockRadius={2}
-            fontSize={11}
-            showWeekdayLabels={true}
-            showColorLegend={true}
-            labels={{
-              months: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-              ],
-              weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-              legend: {
-                less: "Less",
-                more: "More",
-              },
-            }}
-          />
+        {/* Top Badges (All-Time & Active Since) */}
+        <div className="flex items-center gap-3 text-[11px] sm:text-xs font-medium text-muted-foreground">
+          {dataset.lifetimeTotal > 0 && (
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-200/60 dark:bg-zinc-800/60 text-foreground font-semibold">
+              <Flame className="size-3.5 text-amber-500" />
+              {dataset.lifetimeTotal.toLocaleString()} All-Time
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1.5 text-zinc-400">
+            <Calendar className="size-3.5 text-zinc-400" />
+            Active since {earliestYear}
+          </span>
+        </div>
+
+        {/* Horizontal Scrollable Calendar Grid */}
+        <div
+          ref={scrollContainerRef}
+          className="w-full overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-800 [&_.react-activity-calendar__footer]:!hidden"
+        >
+          {loading || currentContributions.length === 0 ? (
+            <div className="w-full h-[120px] flex items-center justify-center rounded-xl bg-zinc-100/40 dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 animate-pulse">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Loader2 className="size-4 animate-spin text-blue-500" />
+                <span>Loading contributions activity...</span>
+              </div>
+            </div>
+          ) : (
+            <div className="min-w-fit">
+              <ActivityCalendar
+                data={currentContributions}
+                loading={loading}
+                colorScheme={resolvedTheme as "light" | "dark"}
+                theme={gitHubTheme}
+                blockSize={11}
+                blockMargin={4}
+                blockRadius={2}
+                fontSize={11}
+                showWeekdayLabels={true}
+                showColorLegend={false}
+                labels={{
+                  months: [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                  ],
+                  weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Static, Non-Scrolling Bottom Bar */}
+        <div className="flex items-center justify-between text-xs text-muted-foreground select-none pt-1">
+          <span className="text-xs text-muted-foreground">
+            {currentTotal.toLocaleString()} activities in {selectedYear}
+          </span>
+
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span>Less</span>
+            <div className="flex items-center gap-1">
+              {(resolvedTheme === "light" ? gitHubTheme.light : gitHubTheme.dark).map((color, idx) => (
+                <span
+                  key={idx}
+                  className="size-[11px] rounded-[2px]"
+                  style={{ backgroundColor: color }}
+                />
+              ))}
+            </div>
+            <span>More</span>
+          </div>
         </div>
       </div>
     </div>

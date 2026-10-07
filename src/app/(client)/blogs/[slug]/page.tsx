@@ -9,10 +9,15 @@ import { Metadata } from "next";
 import ShareButton from "@/components/blog/share-button";
 import ThumbnailWithFallback from "@/components/blog/thumbnail-with-fallback";
 import NextArticle from "@/components/blog/next-article";
+import TableOfContents from "@/components/blog/table-of-contents";
+import MobileToc from "@/components/blog/mobile-toc";
+import ScrollToTop from "@/components/blog/scroll-to-top";
+import ReadingProgressBar from "@/components/blog/reading-progress-bar";
 import { calculateReadTime } from "@/lib/utils";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import BlogHistoryTracker from "@/components/blog/blog-history-tracker";
+import { extractToc } from "@/lib/toc";
 
 interface BlogDetailsPageProps {
   params: {
@@ -54,108 +59,162 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
   }
 
   const readTime = calculateReadTime(blog.content);
+  const tocItems = extractToc(blog.content);
 
   return (
-    <article className="max-w-3xl mx-auto space-y-10">
+    <div className="relative min-h-screen w-full pb-16">
       <BlogHistoryTracker slug={params.slug} />
-      <BlurFade delay={BLUR_FADE_DELAY}>
-        <Link
-          href="/blogs"
-          className="inline-flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors group mb-8"
-        >
-          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
-          Back to Articles
-        </Link>
-      </BlurFade>
+      <ScrollToTop />
 
-      <div className="space-y-6">
-        <BlurFade delay={BLUR_FADE_DELAY * 2}>
-          <div className="flex flex-wrap items-center gap-2">
-            {blog.hashtags && blog.hashtags.length > 0 ? (
-              blog.hashtags.slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 text-[10px] font-bold text-primary uppercase tracking-widest rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md shadow-sm"
-                >
-                  {tag}
-                </span>
-              ))
-            ) : (
-              <span className="px-3 py-1 text-[10px] font-bold text-primary uppercase tracking-widest rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md shadow-sm">
-                Architecture
-              </span>
-            )}
-          </div>
-        </BlurFade>
+      {/* Sticky Top Header Bar */}
+      <header className="sticky top-0 z-30 w-full border-b border-zinc-800/80 bg-background/90 backdrop-blur-md relative">
+        <div className="w-full px-4 sm:px-8 lg:px-12 h-14 flex items-center justify-between">
+          <Link
+            href="/blogs"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-400 hover:text-white transition-colors group"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+            <span>Back to Blogs</span>
+          </Link>
 
-        <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-tight">
-            {blog.title}
-          </h1>
-        </BlurFade>
-
-        <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground font-medium">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              {new Date(blog.createdAt).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric"
-              })}
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4" />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <MobileToc items={tocItems} />
+            <span className="inline-flex items-center gap-1.5 text-xs text-zinc-400 font-medium px-2.5 py-1 rounded-lg bg-zinc-900 border border-zinc-800">
+              <Clock className="h-3.5 w-3.5 text-blue-400" />
               {readTime} min read
-            </div>
+            </span>
           </div>
-        </BlurFade>
-      </div>
-
-      <BlurFade delay={BLUR_FADE_DELAY * 5}>
-        <div className="relative aspect-video rounded-3xl overflow-hidden border border-zinc-200/50 dark:border-white/[0.08] shadow-2xl">
-          <ThumbnailWithFallback
-            src={blog.thumbnail}
-            alt={blog.title}
-            priority
-          />
         </div>
-      </BlurFade>
+        <ReadingProgressBar />
+      </header>
 
-      <BlurFade delay={BLUR_FADE_DELAY * 6}>
-        <MarkdownContent content={blog.content} />
-      </BlurFade>
+      {/* Fixed Left Sidebar: Table of Contents on the far left edge of the screen (Desktop xl+) */}
+      {tocItems.length > 0 && (
+        <aside className="hidden xl:block fixed left-6 2xl:left-10 top-20 w-56 2xl:w-64 max-h-[calc(100vh-6rem)] overflow-y-auto z-20 pr-2">
+          <BlurFade delay={BLUR_FADE_DELAY}>
+            <TableOfContents items={tocItems} />
+          </BlurFade>
+        </aside>
+      )}
 
-      <Suspense fallback={<RelatedBlogSkeleton />}>
-        <RecommendedArticles
-          currentSlug={params.slug}
-          hashtags={blog.hashtags}
-        />
-      </Suspense>
+      {/* Centered Main Article Container */}
+      <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pt-8">
+        <article className="space-y-6">
+          {/* Header: Hashtags, Title, Description, Meta */}
+          <div className="space-y-3">
+            {/* Hashtag Badges */}
+            <BlurFade delay={BLUR_FADE_DELAY * 2}>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {blog.hashtags && blog.hashtags.length > 0 ? (
+                  blog.hashtags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-0.5 text-[11px] font-medium text-zinc-300 rounded-md bg-zinc-900 border border-zinc-800"
+                    >
+                      {tag}
+                    </span>
+                  ))
+                ) : (
+                  <span className="px-2.5 py-0.5 text-[11px] font-medium text-zinc-300 rounded-md bg-zinc-900 border border-zinc-800">
+                    Engineering
+                  </span>
+                )}
+              </div>
+            </BlurFade>
 
-      <BlurFade delay={BLUR_FADE_DELAY * 7.5}>
-        <div className="py-12 border-t border-zinc-200/50 dark:border-white/[0.08] flex gap-6 flex-row sm:items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="relative h-12 w-12 overflow-hidden rounded-2xl border border-zinc-200/50 dark:border-white/[0.08]">
-              <Image
-                src="/me.jpeg"
-                alt="Shubham"
-                fill
-                className="object-cover"
+            {/* Title */}
+            <BlurFade delay={BLUR_FADE_DELAY * 3}>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-[1.25]">
+                {blog.title}
+              </h1>
+            </BlurFade>
+
+            {/* Description */}
+            {blog.description && (
+              <BlurFade delay={BLUR_FADE_DELAY * 3.5}>
+                <p className="text-[15px] sm:text-base text-zinc-400 leading-relaxed">
+                  {blog.description}
+                </p>
+              </BlurFade>
+            )}
+
+            {/* Meta Row: Date, Read Time, Share Button */}
+            <BlurFade delay={BLUR_FADE_DELAY * 4}>
+              <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-zinc-400 font-medium pt-2 border-b border-zinc-800/80 pb-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>
+                      {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5 text-zinc-400" />
+                    <span>{readTime} min read</span>
+                  </div>
+                </div>
+
+                <ShareButton title={blog.title} />
+              </div>
+            </BlurFade>
+          </div>
+
+          {/* Thumbnail Image */}
+          {blog.thumbnail && (
+            <BlurFade delay={BLUR_FADE_DELAY * 5}>
+              <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-zinc-800 shadow-md">
+                <ThumbnailWithFallback
+                  src={blog.thumbnail}
+                  alt={blog.title}
+                  priority
+                />
+              </div>
+            </BlurFade>
+          )}
+
+          {/* Markdown Content */}
+          <BlurFade delay={BLUR_FADE_DELAY * 6}>
+            <MarkdownContent content={blog.content} />
+          </BlurFade>
+
+          {/* Recommended Next Article */}
+          <div className="pt-8">
+            <Suspense fallback={<RelatedBlogSkeleton />}>
+              <RecommendedArticles
+                currentSlug={params.slug}
+                hashtags={blog.hashtags}
               />
-            </div>
-            <div>
-              <p className="font-bold">Shubham</p>
-              <p className="text-sm text-muted-foreground">Full Stack Developer</p>
-            </div>
+            </Suspense>
           </div>
 
-          <div className="flex items-center gap-3">
-            <ShareButton title={blog.title} />
-          </div>
-        </div>
-      </BlurFade>
-    </article>
+          {/* Author Footer & Share Row */}
+          <BlurFade delay={BLUR_FADE_DELAY * 7.5}>
+            <div className="pt-6 border-t border-zinc-800 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="relative h-11 w-11 overflow-hidden rounded-xl border border-zinc-800">
+                  <Image
+                    src="/me.jpeg"
+                    alt="Shubham"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">Shubham</p>
+                  <p className="text-xs text-zinc-400">Full Stack Developer</p>
+                </div>
+              </div>
+
+              <ShareButton title={blog.title} />
+            </div>
+          </BlurFade>
+        </article>
+      </div>
+    </div>
   );
 }
 
@@ -193,9 +252,9 @@ async function RecommendedArticles({
 
   return (
     <BlurFade delay={BLUR_FADE_DELAY}>
-      <div className="pt-12 pb-6">
-        <h4 className="text-xs font-bold text-primary uppercase tracking-[0.3em] mb-8 text-center opacity-60">
-          Keep Reading
+      <div className="space-y-3">
+        <h4 className="text-[11px] font-bold text-zinc-400 uppercase tracking-normal">
+          Next Article
         </h4>
         <NextArticle blog={nextBlogFull} />
       </div>
@@ -205,11 +264,9 @@ async function RecommendedArticles({
 
 function RelatedBlogSkeleton() {
   return (
-    <div className="pt-12 pb-6">
-      <h4 className="text-xs font-bold text-primary uppercase tracking-[0.3em] mb-8 text-center opacity-60">
-        Keep Reading
-      </h4>
-      <div className="h-[180px] w-full bg-zinc-50 dark:bg-white/[0.02] rounded-[2rem] border border-zinc-200/50 dark:border-white/[0.08] animate-pulse" />
+    <div className="space-y-3">
+      <div className="h-3 w-20 bg-zinc-800 rounded animate-pulse" />
+      <div className="h-20 sm:h-24 w-full bg-zinc-900/40 rounded-xl border border-zinc-800/80 animate-pulse" />
     </div>
   );
 }

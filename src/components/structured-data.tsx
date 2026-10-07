@@ -17,7 +17,7 @@ export default function StructuredData() {
     description: DATA.description,
     address: {
       "@type": "PostalAddress",
-      addressLocality: "New Delhi",
+      addressLocality: "Bengaluru",
       addressCountry: "IN",
     },
     alumniOf: DATA.education.map((e) => ({

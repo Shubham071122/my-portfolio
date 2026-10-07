@@ -1,6 +1,7 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ProjectCard } from "@/components/project-card";
 import { DATA } from "@/data/resume";
+import { ArrowUpRight, Github } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ const BLUR_FADE_DELAY = 0.04;
 
 export default function ProjectsPage() {
     return (
-        <main className="flex flex-col min-h-screen py-8 sm:py-12">
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col min-h-screen py-8 sm:py-12">
             <section id="projects-header" className="space-y-4 mb-12">
                 <BlurFade delay={BLUR_FADE_DELAY}>
                     <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-center sm:text-left">
@@ -45,20 +46,33 @@ export default function ProjectsPage() {
                 ))}
             </div>
 
-            <section className="mt-20 text-center">
+            <section className="mt-20 relative">
+                <div className="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full pointer-events-none -z-10" />
+
                 <BlurFade delay={0.5}>
-                    <h2 className="text-2xl font-bold mb-4">Want to see more?</h2>
-                    <p className="text-muted-foreground mb-6">
-                        Check out my GitHub for more experiments.
-                    </p>
-                    <a
-                        href={DATA.contact.social.GitHub.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 px-8"
-                    >
-                        Visit my GitHub
-                    </a>
+                    <div className="rounded-2xl border border-zinc-200/60 dark:border-zinc-800/80 bg-gradient-to-b from-zinc-50/50 to-zinc-100/50 dark:from-zinc-900/40 dark:to-zinc-950/40 p-8 sm:p-10 text-center space-y-4 backdrop-blur-sm">
+                        <div className="space-y-2">
+                            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+                                Want to see <span className="text-blue-500 italic font-serif">more?</span>
+                            </h2>
+                            <p className="text-zinc-600 dark:text-zinc-400 text-sm sm:text-base max-w-md mx-auto leading-relaxed">
+                                Explore all repositories, open-source experiments, and works in progress directly on GitHub.
+                            </p>
+                        </div>
+
+                        <div className="pt-2 flex justify-center">
+                            <a
+                                href={DATA.contact.social.GitHub.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group inline-flex items-center justify-center gap-2.5 px-5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700/80 bg-white/90 dark:bg-zinc-900/90 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 text-sm font-medium transition-all duration-200 shadow-sm hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-md active:scale-[0.98]"
+                            >
+                                <Github className="size-4 text-zinc-700 dark:text-zinc-300 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors" />
+                                <span>Visit my GitHub</span>
+                                <ArrowUpRight className="size-3.5 text-zinc-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                            </a>
+                        </div>
+                    </div>
                 </BlurFade>
             </section>
         </main>

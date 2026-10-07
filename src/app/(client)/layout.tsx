@@ -96,8 +96,10 @@ export default function ClientLayout({
           style={{ display: "none", visibility: "hidden" }}
         />
       </noscript>
-      <div className="max-w-3xl mx-auto pb-12 pt-10 sm:pb-24 sm:pt-18 px-4 sm:px-6">
-        {children}
+      <div className="w-full min-h-screen flex flex-col">
+        <div className="flex-1 w-full">
+          {children}
+        </div>
         <Footer />
         <Navbar />
       </div>

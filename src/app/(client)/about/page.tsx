@@ -28,7 +28,7 @@ const BLUR_FADE_DELAY = 0.04;
 
 export default function AboutPage() {
     return (
-        <main className="flex flex-col min-h-screen py-8 sm:py-16 space-y-10 sm:space-y-12">
+        <main className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col min-h-screen py-8 sm:py-16 space-y-10 sm:space-y-12">
             {/* Header Section */}
             <section className="space-y-4">
                 <BlurFade delay={BLUR_FADE_DELAY}>
@@ -163,17 +163,19 @@ export default function AboutPage() {
                     </div>
 
                     <div className="relative z-10 flex justify-center pt-4 sm:pt-6">
-                        <Link
-                            href="/contact"
+                        <a
+                            href="https://cal.com/shubham-kumar-o7eaiq/30-min"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="group/btn relative px-8 py-4 bg-white text-zinc-900 rounded-2xl font-bold hover:scale-105 transition-all shadow-2xl flex items-center gap-3 overflow-hidden"
                         >
-                            <span className="relative z-10">Get in Touch</span>
+                            <span className="relative z-10">Book a Call</span>
                             <div className="relative z-10 size-5 rounded-full bg-blue-600 text-white flex items-center justify-center transition-transform group-hover/btn:rotate-45">
                                 <ArrowUpRight className="size-3" />
                             </div>
                             {/* Button Hover Glow */}
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-white opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-                        </Link>
+                        </a>
                     </div>
 
                     {/* Subtle Grid Pattern Overlay */}

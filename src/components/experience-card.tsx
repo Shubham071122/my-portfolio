@@ -88,7 +88,7 @@ export const ExperienceCard = ({
         : [];
 
     return (
-        <div className="group relative transition-all duration-300 border border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-950/50 p-5 rounded-2xl blueprint-grid shadow-sm hover:shadow-md dark:hover:shadow-black/20 overflow-hidden">
+        <div className="group relative transition-all duration-300 border border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-950/50 p-4 sm:p-5 rounded-2xl blueprint-grid shadow-sm hover:shadow-md dark:hover:shadow-black/20 overflow-hidden">
             {/* Subtle crosshairs in the corners (architectural/blueprint style) */}
             <div className="absolute top-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
                 <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
@@ -107,110 +107,115 @@ export const ExperienceCard = ({
                 <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
             </div>
 
-            <div className="flex items-start gap-2 sm:gap-4 relative z-20">
-                {/* Logo */}
-                <div className="relative flex-shrink-0 mt-1">
-                    <div className="relative size-10 sm:size-12 overflow-hidden rounded-full border-2 border-muted bg-white">
-                        <Image
-                            src={logoUrl}
-                            alt={company}
-                            fill
-                            className="object-cover"
-                        />
+            <div className="relative z-20 space-y-3">
+                {/* Header Row: Logo, Title, Status, Meta, Toggle */}
+                <div className="flex items-start gap-3 sm:gap-4">
+                    {/* Logo */}
+                    <div className="relative flex-shrink-0 mt-0.5">
+                        <div className="relative size-10 sm:size-11 overflow-hidden rounded-full border border-zinc-700/60 bg-white">
+                            <Image
+                                src={logoUrl}
+                                alt={company}
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
                     </div>
-                </div>
 
-                {/* Content */}
-                <div className="flex-grow space-y-1">
-                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-4">
-                        <div className="space-y-0.5">
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                <h3
-                                    className="text-base sm:text-lg font-bold tracking-tight cursor-pointer hover:underline underline-offset-4 decoration-2 decoration-primary/30"
-                                    onClick={() => setIsExpanded(!isExpanded)}
-                                >
-                                    {company}
-                                </h3>
-                                <div className="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
-                                    {href && (
-                                        <a href={href} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
-                                            <Globe size={14} />
-                                        </a>
-                                    )}
-                                    {linkedinHref && (
-                                        <a href={linkedinHref} target="_blank" rel="noopener noreferrer" className="hover:text-[#0077b5] transition-colors">
-                                            <Linkedin size={14} />
-                                        </a>
-                                    )}
-                                </div>
-                                {statusConfig && (
-                                    <div className={cn("flex items-center gap-1.5 rounded-full px-2 py-0.5 border text-[10px] font-bold uppercase tracking-widest", statusConfig.badgeClass)}>
-                                        <div className={cn("size-1.5 rounded-full", statusConfig.dotClass)} />
-                                        <span>{statusConfig.text}</span>
+                    {/* Header Info */}
+                    <div className="flex-grow min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-4">
+                            <div className="space-y-0.5">
+                                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                    <h3
+                                        className="text-base font-bold tracking-tight text-foreground cursor-pointer hover:underline underline-offset-4 decoration-2 decoration-primary/30"
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                    >
+                                        {company}
+                                    </h3>
+                                    <div className="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+                                        {href && (
+                                            <a href={href} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                                                <Globe size={13} />
+                                            </a>
+                                        )}
+                                        {linkedinHref && (
+                                            <a href={linkedinHref} target="_blank" rel="noopener noreferrer" className="hover:text-[#0077b5] transition-colors">
+                                                <Linkedin size={13} />
+                                            </a>
+                                        )}
                                     </div>
-                                )}
-                                <button
-                                    onClick={() => setIsExpanded(!isExpanded)}
-                                    className={cn(
-                                        "ml-auto sm:ml-1 p-0.5 rounded-md hover:bg-muted transition-all duration-300",
-                                        isExpanded ? "rotate-0" : "-rotate-90"
-                                    )}
-                                >
-                                    <ChevronDown size={14} className="text-muted-foreground sm:size-4" />
-                                </button>
-                            </div>
-                            <p className="text-xs sm:text-sm font-medium text-muted-foreground">{role}</p>
-                        </div>
-
-                        <div className="flex flex-row sm:flex-col justify-between items-center sm:items-end sm:text-right gap-1 pt-1 sm:pt-0">
-                            <p className="text-[10px] sm:text-xs font-semibold tabular-nums text-muted-foreground/80">{company.toLocaleLowerCase() === "plynk" && resolvedStatus === "building" ? "" : period}</p>
-                            <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-medium">{company.toLocaleLowerCase() === "plynk" && resolvedStatus === "building" ? "" : locationType}</p>
-                        </div>
-                    </div>
-
-                    <AnimatePresence initial={false}>
-                        {isExpanded && (
-                            <motion.div
-                                key="content"
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: "auto" }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
-                                className="overflow-hidden"
-                            >
-                                <div className="pt-4 space-y-4">
-                                    {/* Technologies */}
-                                    {technologies && technologies.length > 0 && (
-                                        <div className="space-y-2">
-                                            <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">Technologies</h4>
-                                            <div className="flex flex-wrap gap-2">
-                                                {technologies.map((tech) => (
-                                                    <div
-                                                        key={tech}
-                                                        className="flex items-center gap-1.5 rounded-lg bg-muted/30 border border-border/50 px-2.5 py-1 hover:bg-muted/50 transition-colors group/tech"
-                                                    >
-                                                        <TechIcon name={tech} size={14} showTooltip={false} className="p-0 bg-transparent border-none shadow-none hover:translate-y-0 hover:scale-100" />
-                                                        <span className="text-xs font-medium text-muted-foreground group-hover/tech:text-foreground transition-colors">{tech}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
+                                    {statusConfig && (
+                                        <div className={cn("flex items-center gap-1.5 rounded-full px-2 py-0.5 border text-[10px] font-bold uppercase tracking-widest", statusConfig.badgeClass)}>
+                                            <div className={cn("size-1.5 rounded-full", statusConfig.dotClass)} />
+                                            <span>{statusConfig.text}</span>
                                         </div>
                                     )}
-
-                                    {/* Description Bullets */}
-                                    <ul className="space-y-2.5">
-                                        {bulletPoints.map((point, i) => (
-                                            <li key={i} className="flex gap-2 text-sm leading-relaxed text-muted-foreground/90">
-                                                <span className="mt-1.5 size-1.5 flex-shrink-0 rounded-[2px] bg-muted-foreground/30 group-hover:bg-primary/40 transition-colors" />
-                                                <span>{point.startsWith("-") ? point.substring(2) : point}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <button
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                        className={cn(
+                                            "ml-auto sm:ml-1 p-1 rounded-md hover:bg-zinc-800/50 transition-all duration-300",
+                                            isExpanded ? "rotate-0" : "-rotate-90"
+                                        )}
+                                        aria-label={isExpanded ? "Collapse" : "Expand"}
+                                    >
+                                        <ChevronDown size={15} className="text-zinc-400" />
+                                    </button>
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                                <p className="text-xs sm:text-sm font-medium text-muted-foreground">{role}</p>
+                            </div>
+
+                            <div className="flex flex-row sm:flex-col justify-between items-center sm:items-end sm:text-right gap-1 pt-0.5 sm:pt-0">
+                                <p className="text-[11px] sm:text-xs font-semibold tabular-nums text-muted-foreground/80">{company.toLocaleLowerCase() === "plynk" && resolvedStatus === "building" ? "" : period}</p>
+                                <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-medium">{company.toLocaleLowerCase() === "plynk" && resolvedStatus === "building" ? "" : locationType}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                {/* Expanded Content: Reclaims full card width on mobile instead of being indented */}
+                <AnimatePresence initial={false}>
+                    {isExpanded && (
+                        <motion.div
+                            key="content"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.25, ease: "easeInOut" }}
+                            className="overflow-hidden pt-1"
+                        >
+                            <div className="space-y-3.5 border-t border-zinc-800/60 pt-3">
+                                {/* Technologies - Compact responsive badges */}
+                                {technologies && technologies.length > 0 && (
+                                    <div className="space-y-1.5">
+                                        <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-400">Technologies</h4>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {technologies.map((tech) => (
+                                                <div
+                                                    key={tech}
+                                                    className="inline-flex items-center gap-1.5 rounded-md bg-zinc-900/90 border border-zinc-800/80 px-2 py-0.5 hover:bg-zinc-800/80 transition-colors group/tech"
+                                                >
+                                                    <TechIcon name={tech} size={12} showTooltip={false} className="p-0 bg-transparent border-none shadow-none hover:translate-y-0 hover:scale-100" />
+                                                    <span className="text-[11px] font-medium text-zinc-300 group-hover/tech:text-white transition-colors">{tech}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Description Bullets - Full width reading space with clear bullet styling */}
+                                <ul className="space-y-2">
+                                    {bulletPoints.map((point, i) => (
+                                        <li key={i} className="flex items-start gap-2 text-xs sm:text-[13px] leading-relaxed text-zinc-300">
+                                            <span className="mt-1.5 size-1 flex-shrink-0 rounded-full bg-blue-400/80" />
+                                            <span>{point.startsWith("-") ? point.substring(2) : point}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );

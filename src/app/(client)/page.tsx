@@ -51,7 +51,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <main className="flex flex-col min-h-[100dvh] space-y-10">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col min-h-[100dvh] space-y-10">
       <section id="hero" className="relative pt-8 sm:pt-16">
         {/* Modern Glow Effect */}
         <div className="absolute -top-24 -left-12 size-96 bg-blue-500/10 blur-[120px] rounded-full pointer-events-none z-[-1] dark:bg-blue-500/5" />
@@ -180,9 +180,6 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 11}>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-xl px-4 py-1.5 text-sm font-medium bg-zinc-100/80 dark:bg-white/[0.08] backdrop-blur-xl border border-zinc-200/50 dark:border-white/[0.12] text-zinc-900 dark:text-zinc-100 shadow-xl dark:shadow-2xl">
-                  My Projects
-                </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                   Check out my latest work
                 </h2>
@@ -215,41 +212,43 @@ export default function Page() {
             ))}
           </div>
           <BlurFade delay={BLUR_FADE_DELAY * 15}>
-            <div className="flex justify-center mt-12">
+            <div className="flex justify-center mt-8">
               <Link
                 href="/projects"
-                className="group relative inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl font-bold transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(59,130,246,0.5)] overflow-hidden"
+                className="group inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700/80 bg-white/80 dark:bg-zinc-900/80 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:text-black dark:hover:text-white text-sm font-medium backdrop-blur-sm transition-all duration-200 shadow-sm hover:border-zinc-400 dark:hover:border-zinc-600 hover:shadow-md active:scale-[0.98]"
               >
-                <span className="relative z-10">View All Projects</span>
-                <ArrowRight className="size-4 relative z-10 transition-transform group-hover:translate-x-1" />
+                <span>View All Projects</span>
+                <ArrowRight className="size-4 text-zinc-500 dark:text-zinc-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all" />
               </Link>
             </div>
           </BlurFade>
         </div>
       </section>
-      <section id="contact" className="relative group">
-        {/* Subtle Bottom Glow */}
-        <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 size-72 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none z-[-1] dark:bg-blue-500/5 transition-all duration-700 group-hover:scale-125 group-hover:opacity-100" />
+      <section id="contact" className="relative group pt-4 pb-8">
+        {/* Ambient Glow */}
+        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 size-80 bg-blue-500/10 blur-[100px] rounded-full pointer-events-none z-[-1]" />
 
-        <div className="mx-auto max-w-2xl px-4 py-10 pb-16 text-center">
-          <BlurFade delay={BLUR_FADE_DELAY * 16}>
-            <div className="inline-block rounded-xl px-4 py-1.5 text-sm font-medium mb-4 bg-zinc-100/80 dark:bg-white/[0.08] backdrop-blur-xl border border-zinc-200/50 dark:border-white/[0.12] text-zinc-900 dark:text-zinc-100 shadow-xl dark:shadow-2xl">
-              Connect
+        <BlurFade delay={BLUR_FADE_DELAY * 16}>
+          <div className="relative rounded-3xl border border-zinc-800/80 bg-zinc-950/50 p-8 sm:p-12 backdrop-blur-md shadow-2xl text-center space-y-6 overflow-hidden">
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-transparent pointer-events-none" />
+
+            <div className="relative z-10 space-y-3">
+
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                Let&apos;s Build Something <span className="text-blue-400 italic font-serif">Together</span>
+              </h2>
+
+              <p className="mx-auto max-w-[500px] text-zinc-400 text-sm sm:text-base leading-relaxed">
+                Whether you have a specific project in mind, want to discuss scalable architecture, or just explore new ideas—my calendar is open.
+              </p>
             </div>
 
-            <h2 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-              Let&apos;s Build Something <span className="bg-gradient-to-r from-blue-500 to-blue-400 bg-clip-text text-transparent italic font-serif">Together</span>
-            </h2>
-
-            <p className="mx-auto max-w-[550px] text-muted-foreground text-base sm:text-lg leading-relaxed mb-10">
-              Whether you have a specific project in mind, want to discuss a potential collaboration,
-              or just want to chat about the future of tech—my inbox is always open.
-              Let’s create something amazing.
-            </p>
-
-            <ContactCTA linkedInUrl={DATA.contact.social.LinkedIn.url} />
-          </BlurFade>
-        </div>
+            <div className="relative z-10 pt-2 flex items-center justify-center">
+              <ContactCTA linkedInUrl={DATA.contact.social.LinkedIn.url} />
+            </div>
+          </div>
+        </BlurFade>
       </section>
     </main>
   );

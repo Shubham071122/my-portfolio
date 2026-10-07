@@ -15,7 +15,7 @@ export default function UserDetailPage({ params }: { params: { id: string } }) {
         status: "active",
         avatar: "/me.jpeg",
         joinedDate: "Mar 2024",
-        location: "New Delhi, India"
+        location: "Bengaluru , India"
     };
 
     return (

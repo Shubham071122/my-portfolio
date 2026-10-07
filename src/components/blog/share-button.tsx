@@ -9,7 +9,7 @@ interface ShareButtonProps {
 
 export default function ShareButton({ title }: ShareButtonProps) {
   const handleShare = async () => {
-    const url = window.location.href;
+    const url = typeof window !== "undefined" ? window.location.href : "";
     
     if (navigator.share) {
       try {
@@ -23,30 +23,21 @@ export default function ShareButton({ title }: ShareButtonProps) {
     } else {
       try {
         await navigator.clipboard.writeText(url);
-        toast.success("Link copied to clipboard!");
+        toast.success("Article link copied to clipboard!");
       } catch (err) {
         toast.error("Failed to copy link");
       }
     }
   };
-
-  const handleCopyCode = async (code: string) => {
-		try {
-			await navigator.clipboard.writeText(code)
-			toast.success('Voucher code copied to clipboard!')
-		} catch (error) {
-			console.error('Failed to copy code:', error)
-			toast.error('Failed to copy voucher code. Please try again.')
-		}
-	}
   
   return (
     <button 
-      className="h-10 px-4 rounded-xl border border-zinc-200/50 dark:border-white/[0.08] flex items-center gap-2 text-sm font-bold hover:bg-zinc-100 dark:hover:bg-white/[0.05] transition-all"
+      type="button"
+      className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-zinc-800 bg-zinc-900/80 hover:bg-zinc-800 text-xs font-medium text-zinc-300 hover:text-white transition-all shadow-sm active:scale-95"
       onClick={handleShare}
     >
-      <Share2 className="h-4 w-4" />
-      <span className="sr-only md:not-sr-only">Share Article</span>
+      <Share2 className="h-3.5 w-3.5 text-zinc-400" />
+      <span>Share Article</span>
     </button>
   );
 }

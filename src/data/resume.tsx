@@ -4,14 +4,15 @@ import {
   NotebookIcon,
   UserIcon,
   BriefcaseIcon,
-  MailIcon
+  MailIcon,
+  CalendarCheck,
 } from "lucide-react";
 
 export const DATA = {
   name: "Shubham",
   initials: "SK",
   url: "https://techshubham.cloud",
-  location: "New Delhi, India",
+  location: "Bengaluru, India",
   locationLink: "https://www.google.com/maps/place/new+delhi",
   description:
     "Full Stack Developer | Building Scalable Web Applications | DevOps & Cloud",
@@ -49,7 +50,7 @@ export const DATA = {
     { href: "/about", icon: UserIcon, label: "About" },
     { href: "/projects", icon: BriefcaseIcon, label: "Projects" },
     { href: "/blogs", icon: NotebookIcon, label: "Blogs" },
-    { href: "/contact", icon: MailIcon, label: "Contact" },
+    { href: "https://cal.com/shubham-kumar-o7eaiq/30-min", icon: CalendarCheck, label: "Book a Call" },
   ],
   contact: {
     email: "shubhamkumar.work3@gmail.com",

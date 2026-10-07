@@ -63,7 +63,7 @@ export default function ProjectDetailsPage({ params }: PageProps) {
   const details = "details" in project ? project.details : undefined;
 
   return (
-    <main className="min-h-screen py-8 sm:py-12">
+    <main className="max-w-3xl mx-auto px-4 sm:px-6 min-h-screen py-8 sm:py-12">
       <BlurFade delay={0.04}>
         <Link
           href="/projects"

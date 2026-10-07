@@ -66,7 +66,7 @@ export default function ContactForm() {
     }
 
     return (
-        <main className="flex flex-col min-h-screen py-8 sm:py-12">
+        <main className="max-w-3xl mx-auto px-4 sm:px-6 flex flex-col min-h-screen py-8 sm:py-12">
             <BlurFade delay={0.1}>
                 <Link
                     href="/"
