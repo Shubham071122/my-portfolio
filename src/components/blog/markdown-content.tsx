@@ -7,11 +7,7 @@ import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { slugify } from "@/lib/toc";
 
-interface CodeBlockProps {
-    children: any;
-    className?: string;
-    inline?: boolean;
-}
+import { CodeBlock } from "@/components/blog/code-block";
 
 const extractHeadingText = (children: any): string => {
     if (!children) return "";
@@ -19,78 +15,6 @@ const extractHeadingText = (children: any): string => {
     if (Array.isArray(children)) return children.map(extractHeadingText).join("");
     if (children?.props?.children) return extractHeadingText(children.props.children);
     return String(children);
-};
-
-
-const CodeBlock = ({ children, className, inline }: CodeBlockProps) => {
-    const [isCopied, setIsCopied] = useState(false);
-
-    if (inline) {
-        return (
-            <code className={cn("bg-zinc-800 text-blue-300 px-1.5 py-0.5 rounded font-mono text-[13px] border border-zinc-700/60", className)}>
-                {children}
-            </code>
-        );
-    }
-
-    const content = String(children).replace(/\n$/, "");
-    const language = className?.replace("language-", "") || "code";
-
-    const handleCopy = async () => {
-        try {
-            if (navigator.clipboard && window.isSecureContext) {
-                await navigator.clipboard.writeText(content);
-            } else {
-                const textArea = document.createElement("textarea");
-                textArea.value = content;
-                textArea.style.position = "fixed";
-                textArea.style.left = "-9999px";
-                textArea.style.top = "0";
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                document.execCommand('copy');
-                textArea.remove();
-            }
-            setIsCopied(true);
-            setTimeout(() => setIsCopied(false), 2000);
-        } catch (err) {
-            console.error("Failed to copy:", err);
-        }
-    };
-
-    return (
-        <div className="not-prose my-4 rounded-xl bg-zinc-900 border border-zinc-800 overflow-hidden shadow-md">
-            <div className="flex items-center justify-between px-4 py-1.5 border-b border-zinc-800 bg-zinc-950/80 text-xs text-zinc-400">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
-                    {language}
-                </span>
-                <button
-                    onClick={handleCopy}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors text-[11px]"
-                    title="Copy code"
-                >
-                    {isCopied ? (
-                        <>
-                            <Check className="h-3.5 w-3.5 text-blue-400" />
-                            <span className="text-blue-400 font-medium">Copied</span>
-                        </>
-                    ) : (
-                        <>
-                            <Copy className="h-3.5 w-3.5" />
-                            <span>Copy</span>
-                        </>
-                    )}
-                </button>
-            </div>
-
-            <div className="overflow-x-auto p-4 text-[13px] font-mono leading-relaxed text-zinc-200">
-                <pre className="!m-0 !p-0">
-                    <code>{children}</code>
-                </pre>
-            </div>
-        </div>
-    );
 };
 
 export default function MarkdownContent({ content }: { content: string }) {

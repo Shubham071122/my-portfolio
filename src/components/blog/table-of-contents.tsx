@@ -54,14 +54,27 @@ export default function TableOfContents({ items, className }: TableOfContentsPro
       }
     };
 
+    const unlockScroll = () => {
+      isClickScrolling.current = false;
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = null;
+      }
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("wheel", unlockScroll, { passive: true });
+    window.addEventListener("touchmove", unlockScroll, { passive: true });
     handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", unlockScroll);
+      window.removeEventListener("touchmove", unlockScroll);
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
     };
-  }, [items, activeId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
 
   if (!items || items.length === 0) return null;
 

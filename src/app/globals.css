@@ -120,9 +120,7 @@
     @apply px-4
   }
 
-  code {
-    @apply text-sm md:text-base !leading-loose;
-  }
+  /* code typography handled component-level */
   
   pre > code {
     counter-reset: line;
