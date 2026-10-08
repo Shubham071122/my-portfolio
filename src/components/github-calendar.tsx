@@ -99,72 +99,74 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
           parsedAccounts.map(async (acc) => {
             try {
               const res = await fetch(
-                `https://github-contributions-api.jogruber.de/v4/${acc.username}`
+                `https://github-contributions-api.jogruber.de/v4/${acc.username}?y=all`
               );
-              if (!res.ok) throw new Error("Failed to fetch");
+              if (!res.ok) return null;
               return await res.json();
-            } catch (err) {
-              console.error(`Failed to load GitHub activity for ${acc.username}`, err);
-              return { total: {}, contributions: [] };
+            } catch {
+              return null;
             }
           })
         );
 
-        // Aggregate daily contributions across all accounts
-        const dateMap = new Map<string, number>();
-        const yearTotals: Record<string, number> = {};
+        if (!isMounted) return;
 
-        fetchedResults.forEach((res) => {
-          if (res?.total) {
-            Object.entries(res.total as Record<string, number>).forEach(([yr, count]) => {
-              yearTotals[yr] = (yearTotals[yr] || 0) + (count || 0);
-            });
-          }
+        const validResults = fetchedResults.filter(Boolean);
+        if (validResults.length === 0) {
+          setLoading(false);
+          return;
+        }
 
-          if (Array.isArray(res?.contributions)) {
-            res.contributions.forEach((item: { date: string; count: number }) => {
-              const current = dateMap.get(item.date) || 0;
-              dateMap.set(item.date, current + (item.count || 0));
+        const dateContributionMap = new Map<string, { date: string; count: number }>();
+        const yearSumMap: Record<string, number> = {};
+
+        validResults.forEach((data) => {
+          if (data && Array.isArray(data.contributions)) {
+            data.contributions.forEach((day: { date: string; count: number }) => {
+              const existing = dateContributionMap.get(day.date);
+              if (existing) {
+                existing.count += day.count;
+              } else {
+                dateContributionMap.set(day.date, { date: day.date, count: day.count });
+              }
+
+              const yr = day.date.split("-")[0];
+              yearSumMap[yr] = (yearSumMap[yr] || 0) + day.count;
             });
           }
         });
 
-        const allContributions: Activity[] = Array.from(dateMap.entries())
-          .map(([date, count]) => ({
-            date,
-            count,
-            level: calculateLevel(count),
-          }))
-          .sort((a, b) => a.date.localeCompare(b.date));
+        const mergedContributions: Activity[] = Array.from(dateContributionMap.values())
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .map((item) => ({
+            date: item.date,
+            count: item.count,
+            level: calculateLevel(item.count),
+          }));
 
-        // Available years in descending order
-        const availableYears = Object.keys(yearTotals).sort(
-          (a, b) => Number(b) - Number(a)
-        );
+        const availableYears = Object.keys(yearSumMap).sort((a, b) => b.localeCompare(a));
+        const lifetimeTotal = Object.values(yearSumMap).reduce((a, b) => a + b, 0);
 
-        // Calculate lifetime total & peak year
-        let lifetimeTotal = 0;
         let peakYear: { year: string; count: number } | null = null;
-
-        Object.entries(yearTotals).forEach(([yr, count]) => {
-          lifetimeTotal += count;
+        Object.entries(yearSumMap).forEach(([yr, count]) => {
           if (!peakYear || count > peakYear.count) {
             peakYear = { year: yr, count };
           }
         });
 
-        const last365Slice = allContributions.slice(-365);
-        const lastYearTotal = last365Slice.reduce((sum, c) => sum + c.count, 0);
+        const currentYr = new Date().getFullYear().toString();
+        const lastYearTotal = yearSumMap[currentYr] || 0;
 
         if (isMounted) {
           setDataset({
-            allContributions,
-            yearTotals,
+            allContributions: mergedContributions,
+            yearTotals: yearSumMap,
             availableYears,
             lifetimeTotal,
             lastYearTotal,
             peakYear,
           });
+
           if (availableYears.length > 0 && !availableYears.includes(selectedYear)) {
             setSelectedYear(availableYears[0]);
           }
@@ -180,6 +182,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted, targetUsernamesKey]);
 
   // Compute displayed calendar slice based on selectedYear
@@ -193,9 +196,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
         ? dataset.availableYears[0] || new Date().getFullYear().toString()
         : selectedYear;
 
-    const slice = dataset.allContributions.filter((c) =>
-      c.date.startsWith(`${targetYear}-`)
-    );
+    const slice = dataset.allContributions.filter((c) => c.date.startsWith(targetYear));
     const total =
       dataset.yearTotals[targetYear] ?? slice.reduce((sum, c) => sum + c.count, 0);
 
@@ -214,7 +215,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
 
   if (!mounted) {
     return (
-      <div className="w-full h-[220px] animate-pulse bg-muted/40 border border-zinc-200/50 dark:border-zinc-800/50 rounded-2xl" />
+      <div className="w-full h-[180px] animate-pulse bg-muted/20 border border-border/50 rounded-2xl" />
     );
   }
 
@@ -224,30 +225,12 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
       : "2022";
 
   return (
-    <div className="w-full overflow-hidden border border-zinc-200/60 dark:border-zinc-800/60 bg-gradient-to-br from-zinc-50/90 via-zinc-100/50 to-zinc-50/90 dark:from-zinc-900/60 dark:via-zinc-950/70 dark:to-zinc-900/60 p-4 sm:p-6 rounded-2xl blueprint-grid shadow-sm hover:shadow-md dark:hover:shadow-black/30 transition-all relative">
-      {/* Subtle blueprint crosshairs */}
-      <div className="absolute top-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-20 dark:opacity-40 z-10">
-        <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-        <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-      </div>
-      <div className="absolute top-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-20 dark:opacity-40 z-10">
-        <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-        <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-      </div>
-      <div className="absolute bottom-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-20 dark:opacity-40 z-10">
-        <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-        <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-      </div>
-      <div className="absolute bottom-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-20 dark:opacity-40 z-10">
-        <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-        <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-      </div>
-
-      <div className="relative z-20 flex flex-col gap-3.5 sm:gap-4 w-full">
-        {/* Top Header Row with Title on Left and shadcn-styled Dropdown on Right */}
-        <div className="flex items-center justify-between gap-3 border-b border-zinc-200/50 dark:border-zinc-800/50 pb-3">
+    <div className="w-full overflow-hidden border border-border/60 bg-muted/20 hover:bg-muted/30 backdrop-blur-md p-4 sm:p-5 rounded-2xl shadow-sm hover:border-blue-500/30 transition-all">
+      <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4 w-full">
+        {/* Top Header Row with Title on Left and Dropdown on Right */}
+        <div className="flex items-center justify-between gap-3 border-b border-border/50 pb-3">
           <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="size-8 sm:size-9 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-foreground shadow-sm shrink-0">
+            <div className="size-8 rounded-xl bg-background/80 border border-border flex items-center justify-center text-foreground shadow-sm shrink-0">
               <Icons.github className="size-4" />
             </div>
             <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground">
@@ -255,26 +238,26 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
             </h3>
           </div>
 
-          {/* Custom shadcn-styled Year Dropdown */}
+          {/* Custom Year Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
               type="button"
               onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/90 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-100 hover:text-white transition-all shadow-sm focus:outline-none select-none"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-background/80 hover:bg-background border border-border text-xs font-semibold text-foreground transition-all shadow-sm focus:outline-none select-none"
               aria-expanded={isYearDropdownOpen}
             >
               <span>{selectedYear}</span>
               <ChevronDown
                 className={cn(
-                  "size-3.5 text-zinc-400 transition-transform duration-200",
-                  isYearDropdownOpen ? "rotate-180 text-white" : ""
+                  "size-3.5 text-muted-foreground transition-transform duration-200",
+                  isYearDropdownOpen ? "rotate-180 text-foreground" : ""
                 )}
               />
             </button>
 
             {/* Popover Menu */}
             {isYearDropdownOpen && (
-              <div className="absolute right-0 top-full mt-1.5 w-28 py-1 rounded-xl bg-zinc-950 border border-zinc-800 shadow-2xl z-30 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-100">
+              <div className="absolute right-0 top-full mt-1.5 w-28 py-1 rounded-xl bg-background border border-border shadow-2xl z-30 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-100">
                 {dataset.availableYears.map((yr) => {
                   const isSelected = selectedYear === yr;
                   return (
@@ -288,12 +271,12 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
                       className={cn(
                         "w-full px-3 py-1.5 text-left text-xs font-medium flex items-center justify-between transition-colors",
                         isSelected
-                          ? "bg-zinc-900 text-white font-semibold"
-                          : "text-zinc-400 hover:text-white hover:bg-zinc-900/60"
+                          ? "bg-muted text-foreground font-semibold"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                       )}
                     >
                       <span>{yr}</span>
-                      {isSelected && <Check className="size-3 text-blue-400" />}
+                      {isSelected && <Check className="size-3 text-blue-500" />}
                     </button>
                   );
                 })}
@@ -305,13 +288,13 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
         {/* Top Badges (All-Time & Active Since) */}
         <div className="flex items-center gap-3 text-[11px] sm:text-xs font-medium text-muted-foreground">
           {dataset.lifetimeTotal > 0 && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-zinc-200/60 dark:bg-zinc-800/60 text-foreground font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/60 border border-border/60 text-foreground font-semibold">
               <Flame className="size-3.5 text-amber-500" />
               {dataset.lifetimeTotal.toLocaleString()} All-Time
             </span>
           )}
-          <span className="inline-flex items-center gap-1.5 text-zinc-400">
-            <Calendar className="size-3.5 text-zinc-400" />
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+            <Calendar className="size-3.5 text-muted-foreground" />
             Active since {earliestYear}
           </span>
         </div>
@@ -319,10 +302,10 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
         {/* Horizontal Scrollable Calendar Grid */}
         <div
           ref={scrollContainerRef}
-          className="w-full overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-800 [&_.react-activity-calendar__footer]:!hidden"
+          className="w-full overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-muted-foreground/20 [&_.react-activity-calendar__footer]:!hidden"
         >
           {loading || currentContributions.length === 0 ? (
-            <div className="w-full h-[120px] flex items-center justify-center rounded-xl bg-zinc-100/40 dark:bg-zinc-900/30 border border-zinc-200/50 dark:border-zinc-800/50 animate-pulse">
+            <div className="w-full h-[120px] flex items-center justify-center rounded-xl bg-muted/10 border border-border/50 animate-pulse">
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Loader2 className="size-4 animate-spin text-blue-500" />
                 <span>Loading contributions activity...</span>

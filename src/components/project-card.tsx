@@ -65,31 +65,13 @@ export function ProjectCard({
     >
       <Card
         className={cn(
-          "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/50 dark:border-zinc-800/50 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-950 blueprint-grid transition-all duration-300 hover:shadow-lg dark:hover:shadow-black/40",
+          "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-muted/20 hover:bg-muted/30 backdrop-blur-md transition-all duration-300 hover:border-blue-500/30 hover:shadow-lg dark:hover:shadow-black/40",
           className
         )}
       >
-        {/* Subtle crosshairs in the corners (architectural/blueprint style) */}
-        <div className="absolute top-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
-          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-        </div>
-        <div className="absolute top-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
-          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-        </div>
-        <div className="absolute bottom-3 left-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
-          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-        </div>
-        <div className="absolute bottom-3 right-3 size-3 flex items-center justify-center pointer-events-none opacity-25 dark:opacity-40 z-10">
-          <div className="absolute w-px h-full bg-zinc-400 dark:bg-zinc-600" />
-          <div className="absolute w-full h-px bg-zinc-400 dark:bg-zinc-600" />
-        </div>
-
         <Link
           href={detailsHref}
-          className="relative block aspect-video overflow-hidden border-b border-zinc-200 dark:border-zinc-800"
+          className="relative block aspect-video overflow-hidden border-b border-border/60 bg-muted/40"
         >
           {video ? (
             <video
@@ -98,7 +80,7 @@ export function ProjectCard({
               loop
               muted
               playsInline
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             />
           ) : (
             image && (
@@ -107,7 +89,7 @@ export function ProjectCard({
                 alt={title}
                 width={500}
                 height={300}
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 unoptimized
               />
             )
@@ -115,47 +97,47 @@ export function ProjectCard({
         </Link>
 
         {/* Info Content */}
-        <div className="flex flex-col flex-grow py-5 px-3">
-          <CardHeader className="p-0 mb-4">
+        <div className="flex flex-col flex-grow p-5 sm:p-6">
+          <CardHeader className="p-0 mb-3">
             <div className="space-y-1">
-              <CardTitle className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              <CardTitle className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
                 <Link href={detailsHref} className="transition-colors hover:text-blue-500">
                   {title}
                 </Link>
               </CardTitle>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
                 {dates}
               </div>
             </div>
           </CardHeader>
 
           <CardContent className="p-0">
-            <Markdown className="prose max-w-full text-pretty font-sans text-[13px] leading-relaxed text-zinc-600 dark:text-zinc-400 dark:prose-invert">
+            <Markdown className="prose max-w-full text-pretty font-sans text-xs sm:text-[13px] leading-relaxed text-muted-foreground dark:prose-invert">
               {description}
             </Markdown>
 
-            {/* Tech Icons - Restored color & original behavior */}
+            {/* Tech Icons */}
             {tags && tags.length > 0 && (
-              <div className="mt-6 flex flex-wrap gap-2">
+              <div className="mt-5 flex flex-wrap gap-1.5">
                 {tags.map((tag) => (
                   <TechIcon
                     name={tag}
-                    size={16}
+                    size={15}
                     key={tag}
                     showTooltip={true}
-                    className="bg-white/50 dark:bg-zinc-800/50 border-zinc-200 dark:border-zinc-700 h-8 w-8"
+                    className="bg-background/60 border-border/80 h-7 w-7"
                   />
                 ))}
               </div>
             )}
           </CardContent>
 
-          {/* Action Links - Proper Light/Dark Contrast */}
-          <CardFooter className="mt-auto p-0 pt-6">
-            <div className="flex flex-wrap gap-2.5">
+          {/* Action Links */}
+          <CardFooter className="mt-auto p-0 pt-5">
+            <div className="flex flex-wrap items-center gap-2">
               <Link
                 href={detailsHref}
-                className="inline-flex items-center gap-2 rounded-lg bg-zinc-900 px-3 py-1.5 text-[11px] font-semibold text-white transition-all hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-950 dark:hover:bg-zinc-300"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-[11px] font-semibold text-background transition-all hover:opacity-90 shadow-sm"
               >
                 <span>Details</span>
                 <ArrowRight className="size-3" />
@@ -165,7 +147,7 @@ export function ProjectCard({
                   href={link.href}
                   key={idx}
                   target="_blank"
-                  className="inline-flex items-center gap-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 text-[11px] font-semibold text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 transition-all hover:bg-zinc-900 hover:text-white dark:hover:bg-zinc-50 dark:hover:text-zinc-950"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-background/80 hover:bg-muted border border-border px-2.5 py-1.5 text-[11px] font-semibold text-muted-foreground hover:text-foreground transition-all shadow-sm"
                 >
                   {getLinkIcon(link.type, link.icon)}
                   <span className="capitalize">{link.type}</span>
