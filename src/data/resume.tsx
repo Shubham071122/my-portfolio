@@ -189,7 +189,65 @@ export const DATA = {
     },
   ],
   projects: [
+    {
+      title: "pgcaliper",
+      href: "https://github.com/Shubham071122/pgcaliper",
+      dates: "Oct 2026 - Present",
+      active: true,
+      description:
+        "Enterprise-grade, non-intrusive PostgreSQL storage metering, telemetry, and multi-tenant quota calculation engine written in Go. Safely measures table heaps, TOAST pages, and allocates indexes proportionally without OLTP locks or query degradation.",
+      details: `pgcaliper is an enterprise-grade, non-intrusive PostgreSQL storage metering, telemetry, and multi-tenant quota calculation engine written in Go.
 
+### The Engineering Story
+In multi-tenant SaaS platforms and shared database architectures, enforcing tenant storage quotas (e.g. 5 GB or 20 GB plans) is notoriously difficult. Running live \`SUM(pg_column_size)\` queries inside application request loops spikes CPU and locks active transactions. Furthermore, standard application queries fail to account for B-Tree / GIN indexes and compressed TOAST data, which typically consume **40% to 70% of the total database footprint**.
+
+I built **pgcaliper** to solve this problem as an independent, lightweight telemetry engine. It safely inspects PostgreSQL system catalogs (\`pg_class\`, \`pg_namespace\`, \`information_schema\`), computes precise quota utilization, and stores historical metrics in an auto-managed \`_pgcaliper\` schema — with zero code changes required in the host application.
+
+### Proportional Index Allocation
+A key technical challenge in row-level multi-tenancy is attributing shared B-Tree and GIN indexes to individual tenants. pgcaliper implements a mathematical proportional allocation model:
+
+\`\`\`text
+Index_tenant = Index_table × ( Heap_tenant / Heap_table )
+Total_tenant = Heap_tenant + Index_tenant
+\`\`\`
+
+This guarantees mathematical conservation where the sum of tenant storage shares precisely equals the underlying disk footprint.
+
+## Key Features
+
+- **Non-Intrusive Engine**: Zero table locks or performance degradation; leverages PostgreSQL system catalogs and internal size functions (\`pg_table_size\`, \`pg_indexes_size\`, \`pg_total_relation_size\`).
+- **Four Multi-Tenant Topologies**: Supports Row-Level (\`tenant_id\`/\`org_id\` column partitioning), Schema-per-Tenant (\`tenant_*\` pattern matching), Database Fleet (database-per-tenant), and Custom Table Groups.
+- **Circuit Breaker & Replica-Safe**: Configurable \`statement_timeout\` (e.g. 10s) prevents query stalls; 100% safe to run against read-replicas.
+- **Isolated Telemetry Schema**: Self-bootstraps \`_pgcaliper.snapshots\` and \`_pgcaliper.table_details\` for historical auditing and billing enforcement.
+- **Automated Webhook Alerts**: Real-time notifications to Slack, Discord, or generic webhooks when tenants reach 80%, 95%, or exceed capacity.
+- **Production CLI & Daemon**: Complete CLI toolchain (\`init\`, \`scan\`, \`health\`, \`doctor\`, \`logs\`, \`details\`, \`export\`, \`daemon\`, \`upgrade\`).
+- **Ultra-Lightweight Binary**: Compiles to a single static Go binary (~3.8 MB with UPX compression) with zero external runtime dependencies.
+
+## Tech Stack
+
+Go 1.22+, PostgreSQL 12+, pgx/v5, System Catalogs, Multi-Tenancy Architecture, Docker, GitHub Actions, Linux Systemd`,
+      technologies: [
+        "Go",
+        "PostgreSQL",
+        "Docker",
+        "Linux",
+        "Git",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/Shubham071122/pgcaliper",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Releases",
+          href: "https://github.com/Shubham071122/pgcaliper/releases",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "/pgcaliper.png",
+      video: "",
+    },
     {
       title: "Collab",
       href: "https://collab.plynk.in",
