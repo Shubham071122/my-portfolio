@@ -180,14 +180,15 @@ export default function Page() {
         </div>
       </section>
 
-      {/* GitHub Activity */}
-      <section id="github-activity">
+      {/* Contribution Activity (Personal + Professional) */}
+      <section id="contributions">
         <BlurFade delay={BLUR_FADE_DELAY * 10.5}>
           <GitHubCalendarPanel
             accounts={[
               { label: "Personal", username: DATA.contact.social.GitHub.url.split("/").pop() || "Shubham071122" },
               { label: "Work", username: "shubham-kumar-acowale" },
             ]}
+            gitlabAccounts={["shubham.kumar-acowale"]}
           />
         </BlurFade>
       </section>

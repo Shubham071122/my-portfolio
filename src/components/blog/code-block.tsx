@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Check, Copy } from "lucide-react";
+import { createPortal } from "react-dom";
+import { Check, Copy, Maximize2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { codeToHtml } from "shiki";
 import { MermaidDiagram } from "@/components/blog/mermaid-diagram";
@@ -137,37 +138,97 @@ function HighlightedCodeBlock({
     }
   };
 
+  const [isDiagramOpen, setIsDiagramOpen] = useState(false);
+
   if (isDiagram) {
     return (
-      <div className="not-prose my-3.5 rounded-lg bg-zinc-950/50 border border-zinc-800/60 overflow-hidden">
-        <div className="flex items-center justify-between px-3 py-1 border-b border-zinc-850 bg-zinc-900/20 text-xs">
-          <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
-            {langConfig.label}
-          </span>
+      <>
+        <div className="not-prose my-3.5 rounded-lg bg-zinc-950/50 border border-zinc-800/60 overflow-hidden relative group/diagram">
+          <div className="flex items-center justify-between px-3 py-1 border-b border-zinc-850 bg-zinc-900/20 text-xs">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">
+              {langConfig.label}
+            </span>
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-1 px-1.5 py-0.5 rounded text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors text-[10px] font-mono outline-none"
+              title="Copy diagram"
+            >
+              {isCopied ? (
+                <>
+                  <Check className="size-2.5 text-blue-400" />
+                  <span className="text-blue-400">copied</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="size-2.5" />
+                  <span>copy</span>
+                </>
+              )}
+            </button>
+          </div>
+          <div className="overflow-x-auto p-3 text-zinc-300">
+            <pre className="!m-0 !p-0 !font-mono select-text whitespace-pre !text-[12px] sm:!text-[12.5px] !leading-[1.4]">
+              <code className="!font-mono !text-[12px] sm:!text-[12.5px] !leading-[1.4] !p-0 !bg-transparent text-zinc-300 font-normal">{rawCode}</code>
+            </pre>
+          </div>
           <button
-            onClick={handleCopy}
-            className="flex items-center gap-1 px-1.5 py-0.5 rounded text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors text-[10px] font-mono outline-none"
-            title="Copy diagram"
+            type="button"
+            onClick={() => setIsDiagramOpen(true)}
+            className="absolute bottom-2 right-2 p-1.5 rounded-md bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 border border-zinc-800 hover:border-zinc-700 transition-colors shadow-sm"
+            title="Open diagram in popup"
+            aria-label="Maximize diagram"
           >
-            {isCopied ? (
-              <>
-                <Check className="size-2.5 text-blue-400" />
-                <span className="text-blue-400">copied</span>
-              </>
-            ) : (
-              <>
-                <Copy className="size-2.5" />
-                <span>copy</span>
-              </>
-            )}
+            <Maximize2 className="size-3" />
           </button>
         </div>
-        <div className="overflow-x-auto p-3 text-zinc-300">
-          <pre className="!m-0 !p-0 !font-mono select-text whitespace-pre !text-[12px] sm:!text-[12.5px] !leading-[1.4]">
-            <code className="!font-mono !text-[12px] sm:!text-[12.5px] !leading-[1.4] !p-0 !bg-transparent text-zinc-300 font-normal">{rawCode}</code>
-          </pre>
-        </div>
-      </div>
+
+        {isDiagramOpen &&
+          typeof document !== "undefined" &&
+          createPortal(
+            <div
+              onClick={() => setIsDiagramOpen(false)}
+              className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm animate-in fade-in duration-100"
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="relative w-full max-w-4xl h-[70vh] sm:h-[75vh] max-h-[720px] bg-[#0c0d12] border border-zinc-800 rounded-xl overflow-hidden shadow-2xl flex flex-col"
+              >
+                {/* Header matching main blog style */}
+                <div className="flex items-center justify-between px-3.5 py-1.5 border-b border-zinc-800/70 bg-zinc-950/60 text-xs">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-400 font-semibold">
+                    {langConfig.label}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsDiagramOpen(false)}
+                    className="p-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-colors"
+                    title="Close (ESC)"
+                    aria-label="Close"
+                  >
+                    <X className="size-4" />
+                  </button>
+                </div>
+
+                {/* Canvas viewport matching Mermaid canvas */}
+                <div
+                  className="flex-1 relative overflow-auto flex items-center justify-center p-6 select-text"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px)",
+                    backgroundSize: "20px 20px",
+                  }}
+                >
+                  <div className="p-6 rounded-lg bg-zinc-950/80 border border-zinc-800/80 max-w-full overflow-auto shadow-xl">
+                    <pre className="whitespace-pre !m-0 !p-0 font-mono text-[12.5px] sm:text-[13.5px] leading-[1.45] text-zinc-200">
+                      <code>{rawCode}</code>
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </div>,
+            document.body
+          )}
+      </>
     );
   }
 

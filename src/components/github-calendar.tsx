@@ -15,14 +15,19 @@ export interface GitHubAccount {
 interface Props {
   username?: string;
   accounts?: (GitHubAccount | string)[];
+  gitlabAccounts?: string[];
 }
 
-const DEFAULT_ACCOUNTS: (GitHubAccount | string)[] = [
+const DEFAULT_GITHUB_ACCOUNTS: (GitHubAccount | string)[] = [
   "Shubham071122",
   "shubham-kumar-acowale",
 ];
 
-const gitHubTheme = {
+const DEFAULT_GITLAB_ACCOUNTS: string[] = [
+  "shubham.kumar-acowale",
+];
+
+const calendarTheme = {
   light: ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"],
   dark: ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"],
 };
@@ -35,7 +40,11 @@ function calculateLevel(count: number): number {
   return 4;
 }
 
-export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOUNTS }: Props) {
+export default function GitHubCalendarPanel({
+  username,
+  accounts = DEFAULT_GITHUB_ACCOUNTS,
+  gitlabAccounts = DEFAULT_GITLAB_ACCOUNTS,
+}: Props) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -70,7 +79,8 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
     );
   }, [username, accounts]);
 
-  const targetUsernamesKey = parsedAccounts.map((a) => a.username).join(",");
+  const targetGitHubKey = parsedAccounts.map((a) => a.username).join(",");
+  const targetGitLabKey = gitlabAccounts.join(",");
 
   useEffect(() => {
     setMounted(true);
@@ -95,24 +105,43 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
 
     const fetchAllData = async () => {
       try {
-        const fetchedResults = await Promise.all(
-          parsedAccounts.map(async (acc) => {
-            try {
-              const res = await fetch(
-                `https://github-contributions-api.jogruber.de/v4/${acc.username}?y=all`
-              );
-              if (!res.ok) return null;
-              return await res.json();
-            } catch {
-              return null;
-            }
-          })
-        );
+        const [githubResults, gitlabResults] = await Promise.all([
+          // 1. Fetch GitHub accounts
+          Promise.all(
+            parsedAccounts.map(async (acc) => {
+              try {
+                const res = await fetch(
+                  `https://github-contributions-api.jogruber.de/v4/${acc.username}?y=all`
+                );
+                if (!res.ok) return null;
+                return await res.json();
+              } catch {
+                return null;
+              }
+            })
+          ),
+          // 2. Fetch GitLab accounts via proxy API
+          Promise.all(
+            gitlabAccounts.map(async (gitlabUser) => {
+              try {
+                const res = await fetch(
+                  `/api/gitlab-contributions?username=${encodeURIComponent(gitlabUser)}`
+                );
+                if (!res.ok) return null;
+                return await res.json();
+              } catch {
+                return null;
+              }
+            })
+          ),
+        ]);
 
         if (!isMounted) return;
 
-        const validResults = fetchedResults.filter(Boolean);
-        if (validResults.length === 0) {
+        const validGithub = githubResults.filter(Boolean);
+        const validGitlab = gitlabResults.filter(Boolean);
+
+        if (validGithub.length === 0 && validGitlab.length === 0) {
           setLoading(false);
           return;
         }
@@ -120,7 +149,25 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
         const dateContributionMap = new Map<string, { date: string; count: number }>();
         const yearSumMap: Record<string, number> = {};
 
-        validResults.forEach((data) => {
+        // Merge GitHub contributions
+        validGithub.forEach((data) => {
+          if (data && Array.isArray(data.contributions)) {
+            data.contributions.forEach((day: { date: string; count: number }) => {
+              const existing = dateContributionMap.get(day.date);
+              if (existing) {
+                existing.count += day.count;
+              } else {
+                dateContributionMap.set(day.date, { date: day.date, count: day.count });
+              }
+
+              const yr = day.date.split("-")[0];
+              yearSumMap[yr] = (yearSumMap[yr] || 0) + day.count;
+            });
+          }
+        });
+
+        // Merge GitLab contributions
+        validGitlab.forEach((data) => {
           if (data && Array.isArray(data.contributions)) {
             data.contributions.forEach((day: { date: string; count: number }) => {
               const existing = dateContributionMap.get(day.date);
@@ -183,7 +230,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
       isMounted = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted, targetUsernamesKey]);
+  }, [mounted, targetGitHubKey, targetGitLabKey]);
 
   // Compute displayed calendar slice based on selectedYear
   const { currentContributions, currentTotal } = useMemo(() => {
@@ -227,61 +274,84 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
   return (
     <div className="w-full overflow-hidden border border-border/60 bg-muted/20 hover:bg-muted/30 backdrop-blur-md p-4 sm:p-5 rounded-2xl shadow-sm hover:border-blue-500/30 transition-all">
       <div className="relative z-10 flex flex-col gap-3.5 sm:gap-4 w-full">
-        {/* Top Header Row with Title on Left and Dropdown on Right */}
-        <div className="flex items-center justify-between gap-3 border-b border-border/50 pb-3">
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="size-8 rounded-xl bg-background/80 border border-border flex items-center justify-center text-foreground shadow-sm shrink-0">
-              <Icons.github className="size-4" />
+        {/* Top Header Row with Dual Icons, Title, Badge & Year Dropdown */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/50 pb-3">
+          <div className="flex items-center gap-2.5">
+            {/* Dual Brand Icon: GitHub + GitLab */}
+            <div className="flex items-center -space-x-1.5 shrink-0">
+              <div
+                className="size-8 rounded-xl bg-background border border-border flex items-center justify-center text-foreground shadow-sm z-10 cursor-default transition-transform hover:scale-105"
+                title="GitHub"
+              >
+                <Icons.github className="size-4 pointer-events-none" />
+              </div>
+              <div
+                className="size-8 rounded-xl bg-background border border-border flex items-center justify-center text-[#fc6d26] shadow-sm cursor-default transition-transform hover:scale-105 hover:z-20"
+                title="GitLab"
+              >
+                <Icons.gitlab className="size-4 pointer-events-none" />
+              </div>
             </div>
-            <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground">
-              GitHub Contributions
-            </h3>
+
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground">
+                Contribution Activity
+              </h3>
+            </div>
           </div>
 
-          {/* Custom Year Dropdown */}
-          <div className="relative" ref={dropdownRef}>
-            <button
-              type="button"
-              onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-background/80 hover:bg-background border border-border text-xs font-semibold text-foreground transition-all shadow-sm focus:outline-none select-none"
-              aria-expanded={isYearDropdownOpen}
-            >
-              <span>{selectedYear}</span>
-              <ChevronDown
-                className={cn(
-                  "size-3.5 text-muted-foreground transition-transform duration-200",
-                  isYearDropdownOpen ? "rotate-180 text-foreground" : ""
-                )}
-              />
-            </button>
+          {/* Right Header Area: Personal + Professional Pill & Year Dropdown */}
+          <div className="flex items-center justify-between sm:justify-end gap-2.5">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-background/80 border border-border/70 text-[11px] font-medium text-muted-foreground select-none">
+              <span className="size-1.5 rounded-full bg-blue-500" />
+              Personal + Professional
+            </span>
 
-            {/* Popover Menu */}
-            {isYearDropdownOpen && (
-              <div className="absolute right-0 top-full mt-1.5 w-28 py-1 rounded-xl bg-background border border-border shadow-2xl z-30 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-100">
-                {dataset.availableYears.map((yr) => {
-                  const isSelected = selectedYear === yr;
-                  return (
-                    <button
-                      key={yr}
-                      type="button"
-                      onClick={() => {
-                        setSelectedYear(yr);
-                        setIsYearDropdownOpen(false);
-                      }}
-                      className={cn(
-                        "w-full px-3 py-1.5 text-left text-xs font-medium flex items-center justify-between transition-colors",
-                        isSelected
-                          ? "bg-muted text-foreground font-semibold"
-                          : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
-                      )}
-                    >
-                      <span>{yr}</span>
-                      {isSelected && <Check className="size-3 text-blue-500" />}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+            {/* Custom Year Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                type="button"
+                onClick={() => setIsYearDropdownOpen(!isYearDropdownOpen)}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-background/80 hover:bg-background border border-border text-xs font-semibold text-foreground transition-all shadow-sm focus:outline-none select-none"
+                aria-expanded={isYearDropdownOpen}
+              >
+                <span>{selectedYear}</span>
+                <ChevronDown
+                  className={cn(
+                    "size-3.5 text-muted-foreground transition-transform duration-200",
+                    isYearDropdownOpen ? "rotate-180 text-foreground" : ""
+                  )}
+                />
+              </button>
+
+              {/* Popover Menu */}
+              {isYearDropdownOpen && (
+                <div className="absolute right-0 top-full mt-1.5 w-28 py-1 rounded-xl bg-background border border-border shadow-2xl z-30 overflow-hidden animate-in fade-in-0 zoom-in-95 duration-100">
+                  {dataset.availableYears.map((yr) => {
+                    const isSelected = selectedYear === yr;
+                    return (
+                      <button
+                        key={yr}
+                        type="button"
+                        onClick={() => {
+                          setSelectedYear(yr);
+                          setIsYearDropdownOpen(false);
+                        }}
+                        className={cn(
+                          "w-full px-3 py-1.5 text-left text-xs font-medium flex items-center justify-between transition-colors",
+                          isSelected
+                            ? "bg-muted text-foreground font-semibold"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                        )}
+                      >
+                        <span>{yr}</span>
+                        {isSelected && <Check className="size-3 text-blue-500" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -317,7 +387,7 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
                 data={currentContributions}
                 loading={loading}
                 colorScheme={resolvedTheme as "light" | "dark"}
-                theme={gitHubTheme}
+                theme={calendarTheme}
                 blockSize={11}
                 blockMargin={4}
                 blockRadius={2}
@@ -347,26 +417,26 @@ export default function GitHubCalendarPanel({ username, accounts = DEFAULT_ACCOU
         </div>
 
         {/* Static, Non-Scrolling Bottom Bar */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground select-none pt-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-muted-foreground select-none pt-1">
           <span className="text-xs text-muted-foreground">
             {currentTotal.toLocaleString()} activities in {selectedYear}
           </span>
 
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <span>Less</span>
-            <div className="flex items-center gap-1">
-              {(resolvedTheme === "light" ? gitHubTheme.light : gitHubTheme.dark).map((color, idx) => (
-                <span
-                  key={idx}
-                  className="size-[11px] rounded-[2px]"
-                  style={{ backgroundColor: color }}
-                />
-              ))}
+              <div className="flex items-center gap-1">
+                {(resolvedTheme === "light" ? calendarTheme.light : calendarTheme.dark).map((color, idx) => (
+                  <span
+                    key={idx}
+                    className="size-[11px] rounded-[2px]"
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
+              </div>
+              <span>More</span>
             </div>
-            <span>More</span>
           </div>
         </div>
       </div>
-    </div>
   );
 }

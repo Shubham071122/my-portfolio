@@ -113,6 +113,12 @@ export const Icons = {
       ></path>
     </svg>
   ),
+  gitlab: (props: IconProps) => (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" {...props}>
+      <title>GitLab</title>
+      <path d="m23.6 9.58-1.51-4.66a.82.82 0 0 0-1.57 0l-1.51 4.66H4.99L3.48 4.92a.82.82 0 0 0-1.57 0L.4 9.58a1.65 1.65 0 0 0 .6 1.84l10.45 7.6 1.83 1.34a1.2 1.2 0 0 0 1.44 0l1.83-1.34 10.45-7.6a1.65 1.65 0 0 0 .6-1.84Z" />
+    </svg>
+  ),
   notion: (props: IconProps) => (
     <svg
       width="100"
