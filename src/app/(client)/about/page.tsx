@@ -3,21 +3,18 @@ import { DATA } from "@/data/resume";
 import type { Metadata } from "next";
 import Image from "next/image";
 import {
-    Code2,
     MapPin,
-    Target,
     Cpu,
-    Globe,
     Zap,
-    Coffee,
     Heart,
     Terminal,
     Layers,
-    Sparkles,
     ArrowUpRight,
-    User
+    User,
+    TrendingUp,
+    Film,
+    Trophy
 } from "lucide-react";
-import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "About | Shubham",
@@ -52,11 +49,11 @@ export default function AboutPage() {
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 text-blue-500">
                                 <User className="size-5" />
-                                <span className="text-xs font-bold uppercase tracking-widest">About Me</span>
+                                <span className="text-xs font-bold uppercase tracking-wide">About Me</span>
                             </div>
                             <h2 className="text-xl sm:text-2xl font-bold">I build software that makes sense.</h2>
-                            <p className="text-muted-foreground leading-relaxed text-base sm:text-base italic">
-                                &quot;{DATA.summary}&quot;
+                            <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
+                                {DATA.summary}
                             </p>
                         </div>
                         <div className="mt-8 flex items-center gap-4">
@@ -106,16 +103,15 @@ export default function AboutPage() {
                     </div>
                 </BlurFade>
 
-                {/* Philosophy Block */}
+                {/* Current Focus Block */}
                 <BlurFade delay={BLUR_FADE_DELAY * 6} className="md:col-span-3 h-full">
                     <div className="h-full p-6 sm:p-8 rounded-[1.5rem] sm:rounded-[2rem] border border-border bg-muted/10 group hover:bg-muted/20 transition-all duration-500">
-                        <div className="flex items-center gap-2 text-green-500 mb-4">
-                            <Coffee className="size-5" />
-                            <span className="text-xs font-bold uppercase tracking-widest">Philosophy</span>
+                        <div className="flex items-center gap-2 text-emerald-500 mb-4">
+                            <Zap className="size-5" />
+                            <span className="text-xs font-bold uppercase tracking-widest">Current Focus</span>
                         </div>
                         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                            I believe the best way to grow as a developer is by building things,
-                            breaking them, fixing them, and improving them step by step.
+                            Deep-diving into high-throughput backend architecture, microservices in Go & Fastify, and automated cloud deployments on AWS.
                         </p>
                     </div>
                 </BlurFade>
@@ -127,18 +123,24 @@ export default function AboutPage() {
                             <Heart className="size-5" />
                             <span className="text-xs font-bold uppercase tracking-widest">Beyond the IDE</span>
                         </div>
-                        <ul className="space-y-3 sm:space-y-4 text-muted-foreground">
+                        <ul className="space-y-3 sm:space-y-3.5 text-muted-foreground">
                             <li className="flex items-center gap-3 text-sm sm:text-base">
-                                <div className="size-1.5 sm:size-2 rounded-full bg-pink-500" />
-                                Watching Cricket Matches
+                                <div className="size-7 rounded-lg bg-pink-500/10 text-pink-500 flex items-center justify-center border border-pink-500/20 shrink-0">
+                                    <Trophy className="size-3.5" />
+                                </div>
+                                <span className="font-medium text-foreground/90">Watching Sports: F1 & Cricket</span>
                             </li>
                             <li className="flex items-center gap-3 text-sm sm:text-base">
-                                <div className="size-1.5 sm:size-2 rounded-full bg-pink-500" />
-                                Financial Markets & Trading
+                                <div className="size-7 rounded-lg bg-pink-500/10 text-pink-500 flex items-center justify-center border border-pink-500/20 shrink-0">
+                                    <TrendingUp className="size-3.5" />
+                                </div>
+                                <span className="font-medium text-foreground/90">Market Analysis & Trading</span>
                             </li>
                             <li className="flex items-center gap-3 text-sm sm:text-base">
-                                <div className="size-1.5 sm:size-2 rounded-full bg-pink-500" />
-                                Bingewatching Netflix Series
+                                <div className="size-7 rounded-lg bg-pink-500/10 text-pink-500 flex items-center justify-center border border-pink-500/20 shrink-0">
+                                    <Film className="size-3.5" />
+                                </div>
+                                <span className="font-medium text-foreground/90">Sci-Fi Documentaries</span>
                             </li>
                         </ul>
                     </div>
@@ -193,7 +195,7 @@ function ValueItem({ icon, title, desc }: { icon: React.ReactNode, title: string
                 {icon}
             </div>
             <h4 className="font-bold text-base sm:text-lg">{title}</h4>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed italic border-l-2 border-muted pl-3 sm:pl-4">
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed border-l-2 border-border pl-3 sm:pl-4">
                 {desc}
             </p>
         </div>

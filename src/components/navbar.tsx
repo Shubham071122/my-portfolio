@@ -161,23 +161,6 @@ export default function Navbar() {
             </DockIcon>
           );
         })}
-        {/* Hide theme toggle on client portfolio navbar */}
-        {/* 
-        <Separator orientation="vertical" className="h-full py-2" />
-        <DockIcon>
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger asChild>
-              <div className="flex items-center justify-center size-12 cursor-pointer">
-                <ModeToggle />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="top" sideOffset={10} className={tooltipStyle}>
-              <span className="text-[13px] font-medium tracking-tight leading-none">Theme</span>
-              <TooltipArrow className="fill-white" width={16} height={8} />
-            </TooltipContent>
-          </Tooltip>
-        </DockIcon>
-        */}
       </Dock>
     </div>
   );

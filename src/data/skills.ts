@@ -166,9 +166,9 @@ export const SKILLS_DATA: Record<string, SkillData> = {
   },
   prisma: {
     name: "Prisma",
-    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prisma/prisma-original.svg",
+    icon: "https://cdn.simpleicons.org/prisma/2D3748/FFFFFF",
     url: "https://www.prisma.io",
-    category: "tool",
+    category: "database",
   },
   html5: {
     name: "HTML5",
@@ -379,5 +379,29 @@ export const SKILLS_DATA: Record<string, SkillData> = {
     icon: "https://cdn.simpleicons.org/tldraw",
     url: "https://tldraw.dev",
     category: "frontend",
+  },
+  gcp: {
+    name: "GCP",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg",
+    url: "https://cloud.google.com",
+    category: "cloud",
+  },
+  bun: {
+    name: "Bun",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bun/bun-original.svg",
+    url: "https://bun.sh",
+    category: "backend",
+  },
+  fastify: {
+    name: "Fastify",
+    icon: "https://cdn.simpleicons.org/fastify/000000/FFFFFF",
+    url: "https://fastify.dev",
+    category: "backend",
+  },
+  nestjs: {
+    name: "Nest.js",
+    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nestjs/nestjs-original.svg",
+    url: "https://nestjs.com",
+    category: "backend",
   },
 };

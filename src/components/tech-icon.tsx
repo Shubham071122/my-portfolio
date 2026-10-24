@@ -32,7 +32,13 @@ export const TechIcon = ({
         if (n === "react.js") return "react";
         if (n === "next.js") return "nextjs";
         if (n === "node.js") return "nodejs";
-        if (n === "express.js") return "express";
+        if (n === "express.js" || n === "express") return "express";
+        if (n === "nest.js" || n === "nestjs") return "nestjs";
+        if (n === "fastify") return "fastify";
+        if (n === "bun") return "bun";
+        if (n === "prisma") return "prisma";
+        if (n === "nginx") return "nginx";
+        if (n === "gcp" || n === "google cloud" || n === "googlecloud") return "gcp";
         if (n.includes("fastapi")) return "fastapi";
         if (n.includes("vector db") || n.includes("vector search")) return "mongodbvector";
         if (n.includes("pgvector") || n.includes("pg vector")) return "pgvector";
